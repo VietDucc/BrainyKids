@@ -1,0 +1,19 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /demo
+spring:
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+springdoc:
+  api-docs:
+    version: OPENAPI_3_0
+  api-path: /demo/api-docs
