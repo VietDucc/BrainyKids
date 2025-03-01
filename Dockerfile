@@ -1,14 +1,14 @@
-# Use an official OpenJDK runtime as a parent image
+# Sử dụng OpenJDK 21 làm base image
 FROM openjdk:21-jdk-slim
 
-# Set the working directory in the container
+# Đặt thư mục làm việc trong container
 WORKDIR /app
 
-# Copy the application JAR file into the container
-COPY target/*.jar app.jar
+# Sao chép file JAR (đã build bằng Maven/Gradle) vào container
+COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the application's port
+# Khai báo cổng 8080 (Render sẽ tự nhận diện và map port)
 EXPOSE 8080
 
-# Run the application
+# Lệnh chạy ứng dụng Spring Boot
 ENTRYPOINT ["java", "-jar", "app.jar"]
