@@ -56,7 +56,10 @@ public class UserController {
         userService.deleteUser(userId);
         return "User deleted";
     }
-
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello World";
+    }
 }
 // Hanh trinh du lieu
 // Khi nguoi dung gui request POST/ users
