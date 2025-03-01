@@ -1,14 +1,13 @@
-# Sử dụng OpenJDK 21 làm base image
-FROM openjdk:21-jdk-slim
 
-# Đặt thư mục làm việc trong container
+# Stage 1: Build
+FROM maven:3-openjdk-21 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Sao chép file JAR (đã build bằng Maven/Gradle) vào container
-COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
-
-# Khai báo cổng 8080 (Render sẽ tự nhận diện và map port)
+# Stage 2: Run
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-
-# Lệnh chạy ứng dụng Spring Boot
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
