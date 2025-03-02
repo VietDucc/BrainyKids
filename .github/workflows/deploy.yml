@@ -3,7 +3,7 @@ name: Deploy Backend to Server
 on:
   push:
     branches:
-      - main  # Chạy khi có push lên nhánh main
+      - main  # Chạy khi có push lên nhánh dev
 
 jobs:
   build-and-deploy:
