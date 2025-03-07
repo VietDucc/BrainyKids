@@ -27,11 +27,11 @@ public class UserController {
                // khoi tao thu
     private UserService userService;
 
+    //@RequestBody: chuyen doi  du lieu JSON tu phan than body cua request
+    //thanh doi tuong UserCreationRequest
+    //@Valid: kiem tra rang buoc cua doi tuong UserCreationRequest
     @PostMapping
-    public User createRequest(@RequestBody @Valid UserCreationRequest request) {// @RequestBody: giup SP chuyen doi JSon
-                                                                                // tu
-        // request body thanh mot doi tuong java(
-        // UserCreationRequest)
+    public User createRequest(@RequestBody @Valid UserCreationRequest request) {// @RequestBody: giup SP chuyen doi JSon// tu
         return userService.createRequest(request);
     }
 
@@ -67,3 +67,6 @@ public class UserController {
 // 2. Controller goi Service de xu ly logic
 // 3. Service luu du lieu vao MySQL thong qua Repository
 // 4. Tra ve ket qua JSON cho nguoi dung bang User
+
+//UserCreationRequest dai dien cho kkieu du lieu dau vao
+//Entity du lieu dau ra
