@@ -27,4 +27,9 @@ public class ChallengeProgress {
     private Challenge challenge;
 
     private boolean completed;
+    public ChallengeProgress(User user, Challenge challenge, boolean completed){
+        this.user = user;
+        this.challenge = challenge;
+        this.completed = completed;
+    }
 }
