@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,7 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)//orphanRemoval tu dong xoa unit khi xoa course
     @JsonManagedReference // Danh dau day la phan quan ly them chieu chi lap qua 1 lan
+    @JsonIgnore
     private List<Unit> units = new ArrayList<>();// Khoi tao de tranh NullPontedException khi ta chi post courses nen luc do ko co Units dan den bi loi
 
 

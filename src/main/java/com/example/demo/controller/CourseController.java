@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.request.CourseRequest;
 import com.example.demo.entity.Course;
 import com.example.demo.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class CourseController {
     @PostMapping
     public Course addCourse(@RequestBody Course course) {
         return courseService.addCourse(course);
+    }
+
+    // Cập nhật thông tin khóa học theo ID
+    @PutMapping("/{id}")
+    public Course updateCourse(@PathVariable Long id, @RequestBody CourseRequest courseRequest) {
+      return courseService.updateCourse(id, courseRequest);
     }
 
     // Xóa khóa học theo ID

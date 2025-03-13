@@ -1,11 +1,15 @@
 package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "lessons")
@@ -28,8 +32,13 @@ public class Lesson {
     @JsonBackReference
     private Unit unit;
 
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Challenge> challenges = new ArrayList<>();
+
     public Lesson(String title, int orderIndex){
         this.title = title;
         this.orderIndex = orderIndex;
+        this.challenges = new ArrayList<>();
     }
 }

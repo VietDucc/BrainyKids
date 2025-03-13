@@ -8,6 +8,7 @@ import com.example.demo.dto.request.UnitRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UnitService {
@@ -38,5 +39,27 @@ public class UnitService {
         unit.setCourse(course);
 
         return unitRepository.save(unit);
+    }
+
+    //PUT
+    public Unit updateUnit(Long unitId, UnitRequest unitRequest) {
+        Unit unit = unitRepository.findById(unitId)
+                .orElseThrow(() -> new RuntimeException("Unit not found"));
+
+        Optional.ofNullable(unitRequest.getTitle()).ifPresent(unit::setTitle);
+        Optional.ofNullable(unitRequest.getDescription()).ifPresent(unit::setDescription);
+        Optional.ofNullable(unitRequest.getOrderUnit()).ifPresent(unit::setOrderUnit);
+
+        return unitRepository.save(unit);
+    }
+
+
+    //DELETE
+    public void deleteUnit(Long unitId) {
+        if(!unitRepository.existsById(unitId)) {
+            throw new RuntimeException("Unit not found");
+        } else {
+            unitRepository.deleteById(unitId);
+        }
     }
 }

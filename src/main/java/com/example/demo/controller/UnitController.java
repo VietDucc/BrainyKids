@@ -23,4 +23,14 @@ public class UnitController {
     public Unit createUnit(@PathVariable Long courseId, @RequestBody UnitRequest unitRequest) {
         return unitService.createUnit(courseId, unitRequest);
     }
+
+    @PutMapping("/{unitId}")
+    public Unit updateUnit(@PathVariable Long unitId, @RequestBody UnitRequest unitRequest) {
+        return unitService.updateUnit(unitId, unitRequest);
+    }
+
+    @DeleteMapping("/{unitId}")
+    public void deleteUnit(@PathVariable Long unitId) {
+        unitService.deleteUnit(unitId);
+    }
 }
