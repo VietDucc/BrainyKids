@@ -17,9 +17,8 @@ public class ChallengeProgress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
-    private User user; // Giả sử có entity User
+
+    private String userId;
 
     @ManyToOne
     @JoinColumn(name="challenge_id", nullable=false)
@@ -27,8 +26,8 @@ public class ChallengeProgress {
     private Challenge challenge;
 
     private boolean completed;
-    public ChallengeProgress(User user, Challenge challenge, boolean completed){
-        this.user = user;
+    public ChallengeProgress(String userId, Challenge challenge, boolean completed){
+        this.userId = userId;
         this.challenge = challenge;
         this.completed = completed;
     }

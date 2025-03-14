@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChallengesOptionRequest {
+public class ChallengeOptionRequest {
     private String text;
     private boolean correct;
     private String imageSrc;

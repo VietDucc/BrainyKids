@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-import com.example.demo.enums.CorrectType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,15 +24,15 @@ public class ChallengeOption {
     private Challenge challenge;
     private String textOption;
 
-    private CorrectType correctType;
+    private boolean correct;
 
     private String imageSrc;
 
     private String audioSrc;
-    public ChallengeOption(Challenge challenge, String textOption, CorrectType correctType, String imageSrc, String audioSrc){
+    public ChallengeOption(Challenge challenge, String textOption,boolean correct , String imageSrc, String audioSrc){
         this.challenge = challenge;
         this.textOption = textOption;
-        this.correctType = correctType;
+        this.correct = correct;
         this.imageSrc = imageSrc;
         this.audioSrc = audioSrc;
     }
