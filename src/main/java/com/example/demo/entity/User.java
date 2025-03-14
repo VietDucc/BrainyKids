@@ -1,7 +1,5 @@
 package com.example.demo.entity;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-// Entity: Đánh dấu class này là một Entity, giúp JPA hiểu rằng class này sẽ
-// được map với một bảng trong database
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,14 +21,12 @@ public class User {
 
     private String firstName;
     private String lastName;
+    private String email; // ✅ Thêm email vào entity
 
-
-    public User(String clerkUserId, String firstName, String lastName) {
+    public User(String clerkUserId, String firstName, String lastName, String email) {
         this.clerkUserId = clerkUserId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
     }
-
-
-
 }

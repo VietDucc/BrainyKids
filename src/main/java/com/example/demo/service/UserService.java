@@ -13,11 +13,15 @@ public class UserService {
 
     public User createUser(UserRequest userRequest) {
         User user = new User();
-        user.setClerkUserId(userRequest.getId());
-        user.setFirstName(userRequest.getFirst_name());
-        user.setLastName(userRequest.getLast_name());
-       return  userRepository.save(user);
+        user.setClerkUserId(userRequest.getData().getId());
+        user.setFirstName(userRequest.getData().getFirst_name());
+        user.setLastName(userRequest.getData().getLast_name());
 
+        // Lấy email đầu tiên (nếu có)
+        if (userRequest.getData().getEmail_addresses() != null && !userRequest.getData().getEmail_addresses().isEmpty()) {
+            user.setEmail(userRequest.getData().getEmail_addresses().get(0).getEmail_address());
+        }
+
+        return userRepository.save(user);
     }
-
 }
