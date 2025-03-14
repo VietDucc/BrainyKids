@@ -27,7 +27,7 @@ public class UnitService {
         return unitRepository.findByCourseId(courseId);
     }
 
-    // Tạo Unit mới trong một Course
+    // Tạo Unit mớ i trong một Course
     public Unit createUnit(Long courseId, UnitRequest unitRequest) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
