@@ -10,18 +10,40 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/challenges")
+@RequestMapping("/api")
 public class ChallengeController {
     @Autowired
     private ChallengeService challengeService;
-
-    @GetMapping("/{lessonId}")
-    public List<Challenge> getChallengeByLessonId(@PathVariable Long lessonId) {
-        return challengeService.getChallengeByLessonId(lessonId);
+    /**
+     * createChallenge
+     * @param challengeRequest
+     * @return
+     */
+    @PostMapping("/challenge")
+    public long createChallenge( @RequestBody ChallengeRequest challengeRequest) {
+        return challengeService.createChallenge( challengeRequest);
     }
 
-    @PostMapping("/{lessonId}")
-    public Challenge createChallenge(@PathVariable Long lessonId, @RequestBody ChallengeRequest challengeRequest) {
-       return challengeService.createChallenge(lessonId, challengeRequest);
+    /**
+     * updateChallenge
+     * @param challengeId
+     * @param challengeRequest
+     * @return
+     */
+    @PutMapping("/challenge/{challengeId}")
+    public long updateChallenge (@PathVariable long challengeId, @RequestBody ChallengeRequest challengeRequest)
+    {
+        return challengeService.updateChallenge(challengeId, challengeRequest);
+    }
+
+    /**
+     * deleteChallenge
+     * @param challengeId
+     * @return
+     */
+    @DeleteMapping("/challenge/{challengeId}")
+    public long deleteChallenge (@PathVariable long challengeId)
+    {
+        return challengeService.deleteChallenge(challengeId);
     }
 }

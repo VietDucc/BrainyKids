@@ -7,4 +7,11 @@ import java.util.List;
 
 public interface ChallengeOptionRepository extends JpaRepository<ChallengeOption, Long> {
     List<ChallengeOption> findByChallenge_Id(Long ChallengeId);
+
+    /**
+     * findAllByidIn
+     * @param ids
+     * @return
+     */
+    List<ChallengeOption> findByIdIn(List<Long> ids);
 }
