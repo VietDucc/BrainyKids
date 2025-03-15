@@ -46,4 +46,13 @@ public class ChallengeController {
     {
         return challengeService.deleteChallenge(challengeId);
     }
+    @PutMapping("/{challengeId}")
+    public Challenge updateChallenge(@PathVariable Long challengeId, @RequestBody ChallengeRequest challengeRequest) {
+        return challengeService.updateChallenge(challengeId, challengeRequest);
+    }
+    @DeleteMapping("/{challengeId}")
+    public void deleteChallenge(@PathVariable Long challengeId) {
+        challengeService.deleteChallenge(challengeId);
+    }
+
 }
