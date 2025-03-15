@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.request.LessonRequest;
+import com.example.demo.entity.Challenge;
 import com.example.demo.entity.Lesson;
 import com.example.demo.entity.Unit;
+import com.example.demo.repository.ChallengeRepository;
 import com.example.demo.repository.LessonRepository;
 import com.example.demo.repository.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import java.util.Optional;
 public class LessonService {
     @Autowired
     private LessonRepository lessonRepository;
+
+    @Autowired
+    private ChallengeRepository challengeRepository;
 
     @Autowired
     private UnitRepository unitRepository;
@@ -32,6 +37,7 @@ public class LessonService {
         lesson.setUnit(unit);
         return lessonRepository.save(lesson);
     }
+
     public Lesson updateLesson(Long lessonId, LessonRequest lessonRequest) {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new RuntimeException("Lesson not found"));
@@ -49,4 +55,13 @@ public class LessonService {
         }
         lessonRepository.deleteById(lessonId);
     }
+    /**
+     * getChallengeByLessonId
+     * @param lessonId
+     * @return
+     */
+    public List<Challenge> getChallengeByLessonId(Long lessonId) {
+        return challengeRepository.findByLesson_Id(lessonId);
+    }
 }
+
