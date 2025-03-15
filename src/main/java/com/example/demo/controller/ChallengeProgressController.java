@@ -15,11 +15,22 @@ public class ChallengeProgressController {
     private ChallengeProgressService challengeProgressService;
 
     @GetMapping("/{challengeId}")
-    public List<ChallengeProgress> getChallengeProgressByChallengeId(Long challengeId) {
+    public List<ChallengeProgress> getChallengeProgressByChallengeId(@PathVariable Long challengeId) {
         return challengeProgressService.getChallengeProgressByChallengeId(challengeId);
     }
+
     @PostMapping("/{challengeId}")
     public ChallengeProgress createChallengeProgress(@PathVariable Long challengeId, @RequestBody ChallengeProgressRequest challengeProgressRequest) {
         return challengeProgressService.createChallengeProgress(challengeId, challengeProgressRequest);
+    }
+
+    @PutMapping("/{progressId}")
+    public ChallengeProgress updateChallengeProgress(@PathVariable Long progressId, @RequestBody ChallengeProgressRequest challengeProgressRequest) {
+        return challengeProgressService.updateChallengeProgress(progressId, challengeProgressRequest);
+    }
+
+    @DeleteMapping("/{progressId}")
+    public void deleteChallengeProgress(@PathVariable Long progressId) {
+        challengeProgressService.deleteChallengeProgress(progressId);
     }
 }

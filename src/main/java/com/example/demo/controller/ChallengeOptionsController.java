@@ -24,4 +24,14 @@ public class ChallengeOptionsController {
     public ChallengeOption createChallengeOption(@PathVariable Long challengeId,@RequestBody ChallengeOptionRequest challengeOptionRequest) {
         return challengeOptionService.createChallengeOption(challengeId, challengeOptionRequest);
     }
+    @PutMapping("/{optionId}")
+    public ChallengeOption updateChallengeOption(@PathVariable Long optionId, @RequestBody ChallengeOptionRequest challengeOptionRequest) {
+        return challengeOptionService.updateChallengeOption(optionId, challengeOptionRequest);
+    }
+
+    @DeleteMapping("/{optionId}")
+    public void deleteChallengeOption(@PathVariable Long optionId) {
+        challengeOptionService.deleteChallengeOption(optionId);
+    }
+
 }

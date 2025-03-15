@@ -26,4 +26,17 @@ public class LessonController {
         Lesson newLesson = lessonService.createLesson(unitId, lessonRequest);
         return ResponseEntity.ok(newLesson);
     }
+    // Cập nhật bài học
+    @PutMapping("/{lessonId}")
+    public ResponseEntity<Lesson> updateLesson(@PathVariable Long lessonId, @RequestBody LessonRequest lessonRequest) {
+        Lesson updatedLesson = lessonService.updateLesson(lessonId, lessonRequest);
+        return ResponseEntity.ok(updatedLesson);
+    }
+
+    // Xóa bài học
+    @DeleteMapping("/{lessonId}")
+    public ResponseEntity<Void> deleteLesson(@PathVariable Long lessonId) {
+        lessonService.deleteLesson(lessonId);
+        return ResponseEntity.noContent().build();
+    }
 }

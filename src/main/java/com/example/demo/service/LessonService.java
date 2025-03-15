@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LessonService {
@@ -30,5 +31,22 @@ public class LessonService {
         lesson.setOrderIndex(lessonRequest.getOrderIndex());
         lesson.setUnit(unit);
         return lessonRepository.save(lesson);
+    }
+    public Lesson updateLesson(Long lessonId, LessonRequest lessonRequest) {
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new RuntimeException("Lesson not found"));
+
+        Optional.ofNullable(lessonRequest.getTitle()).ifPresent(lesson::setTitle);
+        Optional.ofNullable(lessonRequest.getOrderIndex()).ifPresent(lesson::setOrderIndex);
+
+        return lessonRepository.save(lesson);
+    }
+
+    // Xóa bài học
+    public void deleteLesson(Long lessonId) {
+        if (!lessonRepository.existsById(lessonId)) {
+            throw new RuntimeException("Lesson not found");
+        }
+        lessonRepository.deleteById(lessonId);
     }
 }
