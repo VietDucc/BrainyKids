@@ -9,6 +9,7 @@ import java.util.List;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     List<Challenge> findByLesson_Id(Long LessonId);
 
-    @Query(value = "SELECT MAX(id) FROM chanllenges", nativeQuery = true)
+    @Query(value = "SELECT COALESCE(MAX(id), 0)  FROM chanllenges", nativeQuery = true)
     Long findMaxId();
+
 }

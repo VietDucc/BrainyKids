@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ChallengeOptionRequestDto {
-    private long id;
+//    private long id;
 
     private String audioSrc;
 
@@ -20,7 +20,7 @@ public class ChallengeOptionRequestDto {
 
     private String textOption;
 
-    private long challangeId;
+//    private long challangeId;
 
     private boolean deleteFlag;
 }
