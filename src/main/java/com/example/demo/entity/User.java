@@ -21,12 +21,16 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private String email; // ✅ Thêm email vào entity
+    private String email;
+    private String profile_image_url;
+    private int score = 0;
 
-    public User(String clerkUserId, String firstName, String lastName, String email) {
+    public User(String clerkUserId, String firstName, String lastName, String email, String profile_image_url, int score) {
         this.clerkUserId = clerkUserId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.profile_image_url = profile_image_url;
         this.email = email;
+        this.score = score;
     }
 }

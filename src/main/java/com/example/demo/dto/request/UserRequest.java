@@ -17,6 +17,7 @@ public class UserRequest {
         private String id;
         private String first_name;
         private String last_name;
+        private String profile_image_url;
         private List<Email> email_addresses;
     }
 

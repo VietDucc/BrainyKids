@@ -16,12 +16,19 @@ public class UserService {
         user.setClerkUserId(userRequest.getData().getId());
         user.setFirstName(userRequest.getData().getFirst_name());
         user.setLastName(userRequest.getData().getLast_name());
-
+        user.setProfile_image_url(userRequest.getData().getProfile_image_url());
+        user.setScore(0);
         // Lấy email đầu tiên (nếu có)
         if (userRequest.getData().getEmail_addresses() != null && !userRequest.getData().getEmail_addresses().isEmpty()) {
             user.setEmail(userRequest.getData().getEmail_addresses().get(0).getEmail_address());
         }
 
+        return userRepository.save(user);
+    }
+
+    public User updateUserScore(Long userId, int newScore) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setScore(newScore);
         return userRepository.save(user);
     }
 }
