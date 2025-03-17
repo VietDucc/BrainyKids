@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.UserRequest;
 import com.example.demo.dto.request.UserScoreRequest;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,9 @@ import com.example.demo.service.UserService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.scheduling.annotation.Scheduled;
+
+import java.util.List;
 
 
 @RestController
@@ -22,6 +26,9 @@ public class UserController {
                // khoi tao thu
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping("/clerk")
     public User createUser(@RequestBody UserRequest userRequest) {
         return userService.createUser(userRequest);
@@ -30,6 +37,19 @@ public class UserController {
     @PutMapping("/{clerkUserId}/score")
    public User updateUserScore(@PathVariable String clerkUserId, @RequestBody UserScoreRequest userScoreRequest) {
         return userService.updateUserScore(clerkUserId, userScoreRequest.getScore());
+    }
+
+    //Reset diem ve o vao ngay 1 hang thang luc 00:00
+    @Scheduled(cron = "0 0 0 1 * ?")
+    public void resetMothlyScores() {
+        List<User> users = userRepository.findAll();
+        for(User user: users){
+            user.setScore(0);
+
+        }
+        userRepository.saveAll(users);
+        System.out.println("✅ Đã reset điểm về 0 cho tất cả user!");
+
     }
 
 }
