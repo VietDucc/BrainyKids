@@ -27,9 +27,9 @@ public class UserController {
         return userService.createUser(userRequest);
 
     }
-    @PutMapping("/{id}/score")
-   public User updateUserScore(@PathVariable Long id, @RequestBody UserScoreRequest userScoreRequest) {
-        return userService.updateUserScore(id, userScoreRequest.getScore());
+    @PutMapping("/{clerkUserId}/score")
+   public User updateUserScore(@PathVariable String clerkUserId, @RequestBody UserScoreRequest userScoreRequest) {
+        return userService.updateUserScore(clerkUserId, userScoreRequest.getScore());
     }
 
 }

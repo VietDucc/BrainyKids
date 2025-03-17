@@ -26,9 +26,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUserScore(Long userId, int newScore) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    public User updateUserScore(String clerkUserId, int newScore) {
+        User user = userRepository.findByClerkUserId(clerkUserId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         user.setScore(newScore);
         return userRepository.save(user);
     }
+
 }
