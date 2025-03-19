@@ -1,10 +1,9 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Date;
 
 @Entity
 @Table( name = "lesson_progress")
@@ -26,4 +25,6 @@ public class LessonProgress {
     private Lesson lesson;
 
     private boolean completed;
+
+    private Date dateLesson;
 }

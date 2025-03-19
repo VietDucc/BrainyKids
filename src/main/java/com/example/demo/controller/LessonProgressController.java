@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.request.LessonProgressRequest;
 import com.example.demo.dto.response.LessonProgressResponse;
 import com.example.demo.entity.LessonProgress;
-import com.example.demo.repository.LessonProgressRepository;
+
 import com.example.demo.service.LessonProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class LessonProgressController {
                 lessonProgressRequest.getLessonId(),
                 lessonProgressRequest.isCompleted()
         );
-        return ResponseEntity.ok("Lesson progress updated successfully");
+        return ResponseEntity.ok("Lesson successfully");
     }
     //Lay danh sach lesson da hoc cua user
     @GetMapping("/{clerkUserId}")

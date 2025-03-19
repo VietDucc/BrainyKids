@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,8 @@ public class LessonProgressService {
 
     @Autowired
     private LessonRepository lessonRepository;
+    @Autowired
+    private UserProgressService userProgressService;
 
     public LessonProgress updateLessonProgress(String clerkUserId, long lessonId, boolean completed) {
         // Tìm user theo clerkUserId
@@ -42,13 +45,18 @@ public class LessonProgressService {
             // Nếu đã tồn tại, cập nhật trạng thái completed
             progress = progressList.get(0);
             progress.setCompleted(completed);
+            progress.setDateLesson(new Date());
         } else {
             // Nếu chưa có, tạo mới
             progress = new LessonProgress();
             progress.setUser(user);
             progress.setLesson(lesson);
             progress.setCompleted(completed);
+            progress.setDateLesson(new Date());
         }
+
+        // 🔥 Gọi tự động tăng streak sau khi hoàn thành lesson
+        userProgressService.updateUserProgress(clerkUserId);
 
         return lessonProgressRepository.save(progress);
     }
@@ -62,7 +70,8 @@ public class LessonProgressService {
                         progress.getId(),
                         progress.isCompleted(),
                         progress.getLesson().getId(), // Lấy ID của bài học
-                        progress.getUser().getClerkUserId() // Lấy ID của user
+                        progress.getUser().getClerkUserId(), // Lấy ID của user
+                        progress.getDateLesson()
                 ))
                 .collect(Collectors.toList());
     }
