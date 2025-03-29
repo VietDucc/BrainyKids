@@ -16,6 +16,7 @@ public class UnitService {
     private final UnitRepository unitRepository;
     private final CourseRepository courseRepository;
 
+
     // ✅ Sử dụng constructor injection thay vì @Autowired trên field
     public UnitService(UnitRepository unitRepository, CourseRepository courseRepository) {
         this.unitRepository = unitRepository;
@@ -24,7 +25,8 @@ public class UnitService {
 
     // Lấy danh sách Unit theo Course ID
     public List<Unit> getUnitsByCourseId(Long courseId) {
-        return unitRepository.findByCourseId(courseId);
+      return unitRepository.findByCourseId(courseId);
+
     }
 
     // Tạo Unit mớ i trong một Course

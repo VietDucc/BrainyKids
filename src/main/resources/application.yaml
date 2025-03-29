@@ -1,4 +1,26 @@
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pk_test_YWxsb3dpbmctY3ViLTU1LmNsZXJrLmFjY291bnRzLmRldiQ"
+CLERK_SECRET_KEY: "sk_test_l07VMBsLaiQOMbNRFGrPSgstg2g20wUTrpwDST4ASM"
+clerk:
+  public-key: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsvAZJARYPJ6MGN8Kyw4u
+    YlB0fdxExRt1mWxmsw2YoPBNDYMENen2P9ZcAmILnUkNCD0gomomfMjWWBjhGJrO
+    CxdZVsTLBhyM4BCEzpdhDtXD/QkCHNZu8ayCF8rYenNYPa8OeI4CcbKxVxVopmam
+    vh86MyE+/+JJbed+/UTabif27Fm8tGy5a+moopmLXJo8Wyu9Fd+PWVWZ3cTYpmQF
+    FIiXGNgkOFHiUXYPAgI+2ZC8l7ivh/SJNa0o9mp7PA0YGH8E8z1KhydElqqPtKH2
+    5YKwPNpnW7Kg9Xyi1ykU863nmFgea56fEVmRkztOju/WpGqhSTVMaxgQtuxHSMSv
+    SwIDAQAB
+    -----END PUBLIC KEY-----
+
+
+
 spring:
+  redis:
+    host: switchyard.proxy.rlwy.net
+    port: 49012
+    username: default
+    password: jMYlBtpRFpyedGNWxoCSrVrPMHUwwdJP
+    ssl: false
   datasource:
     url: "jdbc:postgresql://ep-autumn-block-a1n9tyd9-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
     username: "neondb_owner"
