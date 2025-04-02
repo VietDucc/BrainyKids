@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChallengeProgressService {
@@ -38,5 +39,21 @@ public class ChallengeProgressService {
         return challengeProgressRepository.save(challengeProgress);
     }
 
-    
+    public ChallengeProgress updateChallengeProgress(Long progressId, ChallengeProgressRequest challengeProgressRequest) {
+        ChallengeProgress challengeProgress = challengeProgressRepository.findById(progressId)
+                .orElseThrow(() -> new RuntimeException("Challenge Progress not found"));
+
+        Optional.ofNullable(challengeProgressRequest.getUserId()).ifPresent(challengeProgress::setUserId);
+        Optional.ofNullable(challengeProgressRequest.isCompleted()).ifPresent(challengeProgress::setCompleted);
+
+        return challengeProgressRepository.save(challengeProgress);
+    }
+
+
+    public void deleteChallengeProgress(Long progressId) {
+        if (!challengeProgressRepository.existsById(progressId)) {
+            throw new RuntimeException("Challenge Progress not found");
+        }
+        challengeProgressRepository.deleteById(progressId);
+    }
 }

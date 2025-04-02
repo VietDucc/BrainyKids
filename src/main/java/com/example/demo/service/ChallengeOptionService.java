@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChallengeOptionService {
@@ -37,6 +38,24 @@ public class ChallengeOptionService {
 
         return challengeOptionRepository.save(challengeOption);
     }
+    public ChallengeOption updateChallengeOption(Long optionId, ChallengeOptionRequest challengeOptionRequest) {
+        ChallengeOption challengeOption = challengeOptionRepository.findById(optionId)
+                .orElseThrow(() -> new RuntimeException("Challenge Option not found"));
 
+        Optional.ofNullable(challengeOptionRequest.getText()).ifPresent(challengeOption::setTextOption);
+        Optional.ofNullable(challengeOptionRequest.isCorrect()).ifPresent(challengeOption::setCorrect);
+        Optional.ofNullable(challengeOptionRequest.getImageSrc()).ifPresent(challengeOption::setImageSrc);
+        Optional.ofNullable(challengeOptionRequest.getAudioSrc()).ifPresent(challengeOption::setAudioSrc);
+
+        return challengeOptionRepository.save(challengeOption);
+    }
+
+
+    public void deleteChallengeOption(Long optionId) {
+        if (!challengeOptionRepository.existsById(optionId)) {
+            throw new RuntimeException("Challenge Option not found");
+        }
+        challengeOptionRepository.deleteById(optionId);
+    }
 
 }
