@@ -16,7 +16,7 @@ clerk:
 
 spring:
   redis:
-    host: switchyard.proxy.rlwy.net
+    host: "switchyard.proxy.rlwy.net"
     port: 49012
     username: default
     password: jMYlBtpRFpyedGNWxoCSrVrPMHUwwdJP
