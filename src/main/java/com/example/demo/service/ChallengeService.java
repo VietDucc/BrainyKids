@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Builder
 public class ChallengeService {
     @Autowired
     private ChallengeRepository challengeRepository;

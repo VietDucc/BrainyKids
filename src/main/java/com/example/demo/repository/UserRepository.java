@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import com.example.demo.entity.User;
 
@@ -13,4 +14,6 @@ import java.util.Optional;
 // chính của Entity.
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByClerkUserId(String clerkUserId);
+
+    List<User> findTop10OderedByScoreDesc();
 }
