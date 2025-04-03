@@ -22,19 +22,19 @@ public class CourseService {
 
     public List<Course> getAllCourses() {
 
-//        return courseRepository.findAll();
-        // Kiểm tra xem danh sách Course có trong Redis không
-        List<Course> courses = (List<Course>) redisTemplate.opsForValue().get(REDIS_COURSES_KEY);
-
-        if (courses == null) {
-            // Nếu không có trong Redis, lấy từ Database
-            courses = courseRepository.findAll();
-
-            // Lưu vào Redis với thời gian 30 phút
-            redisTemplate.opsForValue().set(REDIS_COURSES_KEY, courses, 30, TimeUnit.MINUTES);
-        }
-
-        return courses;
+        return courseRepository.findAll();
+//        // Kiểm tra xem danh sách Course có trong Redis không
+//        List<Course> courses = (List<Course>) redisTemplate.opsForValue().get(REDIS_COURSES_KEY);
+//
+//        if (courses == null) {
+//            // Nếu không có trong Redis, lấy từ Database
+//            courses = courseRepository.findAll();
+//
+//            // Lưu vào Redis với thời gian 30 phút
+//            redisTemplate.opsForValue().set(REDIS_COURSES_KEY, courses, 30, TimeUnit.MINUTES);
+//        }
+//
+//        return courses;
     }
 
     public Optional<Course> getCourseById(Long id) {
