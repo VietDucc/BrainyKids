@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserScoreResponseDTO {
     private Long id;
+    private String clerkUserId;
     private String username;
     private int score;
 }
