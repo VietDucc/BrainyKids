@@ -15,5 +15,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByClerkUserId(String clerkUserId);
 
-    List<User> findTop10OderedByScoreDesc();
+    List<User> findAll();
 }
