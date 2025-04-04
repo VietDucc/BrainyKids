@@ -25,6 +25,7 @@ public class User {
     private String email;
     private String profile_image_url;
     private int score = 0;
+    private boolean isNewUser ;
 
     public User(String clerkUserId, String firstName, String lastName, String email, String profile_image_url, int score) {
         this.clerkUserId = clerkUserId;
@@ -33,5 +34,8 @@ public class User {
         this.profile_image_url = profile_image_url;
         this.email = email;
         this.score = score;
+        this.isNewUser = isNewUser;
+
+
     }
 }
