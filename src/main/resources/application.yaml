@@ -16,8 +16,8 @@ clerk:
 
 spring:
   redis:
-    host: host.docker.internal   # <<< sửa chỗ này
-    port: 6379         # <<< sửa chỗ này
+    host: ${SPRING_REDIS_HOST:localhost}
+    port: ${SPRING_REDIS_PORT:6379}
     # username: default   # <<< Redis mặc định không có username, xóa dòng này
     # password: abcxyz    # <<< Redis mặc định cũng không có password, xóa dòng này
     ssl: false
