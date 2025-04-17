@@ -35,7 +35,20 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 8022
           script: |
-            cd /home/duc/BrainyKids
-            docker pull ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
-            docker compose down
-            docker compose up -d
+            # Cài git nếu server chưa có
+            which git || sudo apt-get update && sudo apt-get install -y git
+            
+            # Clone hoặc pull repo
+            cd ~
+            if [ ! -d "BrainyKids" ]; then
+              git clone https://github.com/VietDucc/BrainyKids.git
+            else
+              cd BrainyKids
+              git pull origin dev
+            fi
+            
+            # Chạy docker-compose
+            cd ~/BrainyKids
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
