@@ -35,7 +35,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 8022
           script: |
-            cd /path/to/your/project  # <<< sửa đường dẫn tới thư mục chứa docker-compose.yml trên server
+            cd /home/duc/BrainyKids
             docker-compose down
             docker-compose pull
             docker-compose up -d
