@@ -3,7 +3,7 @@ name: Deploy Backend to Server
 on:
   push:
     branches:
-      - dev  # Chạy khi có push lên nhánh devvvv
+      - dev  # Chạy khi có push lên nhánh dev
 
 jobs:
   build-and-deploy:
@@ -35,7 +35,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 8022
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
-            docker stop my_backend || true
-            docker rm my_backend || true
-            docker run -d --name my_backend -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+            cd /path/to/your/project  # <<< sửa đường dẫn tới thư mục chứa docker-compose.yml trên server
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
