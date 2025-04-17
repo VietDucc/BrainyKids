@@ -16,10 +16,10 @@ clerk:
 
 spring:
   redis:
-    host: "switchyard.proxy.rlwy.net"
-    port: 49012
-    username: default
-    password: jMYlBtpRFpyedGNWxoCSrVrPMHUwwdJP
+    host: localhost   # <<< sửa chỗ này
+    port: 6379         # <<< sửa chỗ này
+    # username: default   # <<< Redis mặc định không có username, xóa dòng này
+    # password: abcxyz    # <<< Redis mặc định cũng không có password, xóa dòng này
     ssl: false
   datasource:
     url: "jdbc:postgresql://ep-autumn-block-a1n9tyd9-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
