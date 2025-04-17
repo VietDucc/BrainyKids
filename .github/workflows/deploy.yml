@@ -3,7 +3,7 @@ name: Deploy Backend to Server
 on:
   push:
     branches:
-      - dev  # Chạy khi có push lên nhánh dev
+      - dev
 
 jobs:
   build-and-deploy:
@@ -36,6 +36,6 @@ jobs:
           port: 8022
           script: |
             cd /home/duc/BrainyKids
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d
+            docker pull ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+            docker compose down
+            docker compose up -d
