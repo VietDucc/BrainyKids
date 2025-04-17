@@ -37,7 +37,13 @@ jobs:
           script: |
             # Cài git nếu server chưa có
             which git || sudo apt-get update && sudo apt-get install -y git
-            
+
+            # Cài docker-compose nếu chưa có
+            which docker-compose || sudo apt-get update && sudo apt-get install -y docker-compose
+
+            # Thêm repo vào git safe directory
+            git config --global --add safe.directory /home/${{ secrets.SERVER_USER }}/BrainyKids
+
             # Clone hoặc pull repo
             cd ~
             if [ ! -d "BrainyKids" ]; then
@@ -46,7 +52,7 @@ jobs:
               cd BrainyKids
               git pull origin dev
             fi
-            
+
             # Chạy docker-compose
             cd ~/BrainyKids
             docker-compose down
