@@ -19,8 +19,8 @@ services:
     networks:
       - my-network
     environment:
-      - SPRING_REDIS_HOST=my-redis
-      - SPRING_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_HOST=my-redis
+      - SPRING_DATA_REDIS_PORT=6379
 
 networks:
   my-network:
