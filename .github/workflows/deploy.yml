@@ -21,7 +21,7 @@ jobs:
 
       - name: 🏗️ Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-backend:latest .
+          docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/my-backend:latest .
 
       - name: 📤 Push Docker Image to Docker Hub
         run: |
@@ -35,7 +35,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 8022
           script: |
-            # Cài git nếu server chưa có
+            # Cài git nếu chưa có
             which git || sudo apt-get update && sudo apt-get install -y git
 
             # Cài docker-compose nếu chưa có
@@ -44,7 +44,7 @@ jobs:
             # Thêm repo vào git safe directory
             git config --global --add safe.directory /home/${{ secrets.SERVER_USER }}/BrainyKids
 
-            # Clone hoặc pull repo
+            # Pull repo
             cd ~
             if [ ! -d "BrainyKids" ]; then
               git clone https://github.com/VietDucc/BrainyKids.git
