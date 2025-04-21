@@ -16,10 +16,8 @@ clerk:
 
 spring:
   redis:
-    host: ${SPRING_REDIS_HOST:localhost}
+    host: my-redis
     port: ${SPRING_REDIS_PORT:6379}
-    # username: default   # <<< Redis mặc định không có username, xóa dòng này
-    # password: abcxyz    # <<< Redis mặc định cũng không có password, xóa dòng này
     ssl: false
     timeout: 5s
   datasource:
