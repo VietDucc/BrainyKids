@@ -43,3 +43,8 @@ springdoc:
   api-docs:
     version: OPENAPI_3_0
   api-path: /demo/api-docs
+
+logging:
+  level:
+    org.springframework.data.redis: DEBUG
+    io.lettuce.core: DEBUG
