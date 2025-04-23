@@ -4,4 +4,5 @@ public enum ChallengeType {
     SELECT,
     ASSIST,
     TEXT
+
 }
