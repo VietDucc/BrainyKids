@@ -3,7 +3,7 @@ name: Deploy Backend to Server
 on:
   push:
     branches:
-      - dev  # Chạy khi có push lên nhánh devvvv
+      - dev
 
 jobs:
   build-and-deploy:
@@ -21,7 +21,7 @@ jobs:
 
       - name: 🏗️ Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-backend:latest .
+          docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/my-backend:latest .
 
       - name: 📤 Push Docker Image to Docker Hub
         run: |
@@ -35,7 +35,26 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 8022
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
-            docker stop my_backend || true
-            docker rm my_backend || true
-            docker run -d --name my_backend -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+            # Cài git nếu chưa có
+            which git || sudo apt-get update && sudo apt-get install -y git
+
+            # Cài docker-compose nếu chưa có
+            which docker-compose || sudo apt-get update && sudo apt-get install -y docker-compose
+
+            # Thêm repo vào git safe directory
+            git config --global --add safe.directory /home/${{ secrets.SERVER_USER }}/BrainyKids
+
+            # Pull repo
+            cd ~
+            if [ ! -d "BrainyKids" ]; then
+              git clone https://github.com/VietDucc/BrainyKids.git
+            else
+              cd BrainyKids
+              git pull origin dev
+            fi
+
+            # Chạy docker-compose
+            cd ~/BrainyKids
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d

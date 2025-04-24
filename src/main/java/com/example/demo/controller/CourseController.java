@@ -20,6 +20,8 @@ public class CourseController {
     // Lấy danh sách tất cả khóa học
     @GetMapping
     public List<Course> getAllCourses() {
+        System.out.println("hello"); // In ra chuỗi "hello"
+
         return courseService.getAllCourses();
     }
 

@@ -39,6 +39,13 @@ public class UserController {
         return userService.updateUserScore(clerkUserId, userScoreRequest.getScore());
     }
 
+    @PutMapping("/{clerkUserId}/test-completed")
+    public User updateUserAsTestCompleted(@PathVariable String clerkUserId) {
+        User user = userRepository.findByClerkUserId(clerkUserId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setNewUser(false);
+        return userRepository.save(user);
+    }
     //Reset diem ve o vao ngay 1 hang thang luc 00:00
     @Scheduled(cron = "0 0 0 1 * ?")
     public void resetMothlyScores() {
