@@ -46,16 +46,20 @@ jobs:
             bash -c "/arachni/bin/arachni --output-only-positives --report-save-path=arachni_report.afr https://brainy-kids-frontend.vercel.app/"
         continue-on-error: true
 
-      # Step 4: SonarCloud Code Quality Analysis
-      - name: 🔎 SonarCloud Scan (via SonarSource action)
-        uses: SonarSource/sonarqube-scan-action@v4.1.0
-        with:
-          sonar-project-key: 'VietDucc_BrainyKids'
-          sonar-organization: 'VietDuc'  # Thay bằng tên tổ chức của bạn trên SonarCloud
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        continue-on-error: true
 
+      # Step 4: SonarCloud Code Quality Analysis
+      - name: 🔎 SonarCloud Scan (CLI)
+        run: |
+          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip sonar-scanner.zip
+          ./sonar-scanner-*/bin/sonar-scanner \
+            -Dsonar.projectKey=VietDucc_BrainyKids \
+            -Dsonar.organization=VietDuc \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+        continue-on-error: true
 
       - name: 🏗️ Build Docker Image
         run: |
