@@ -21,7 +21,7 @@ jobs:
 
       # Step 1: Snyk Security Scan
       - name: 🔍 Run Snyk to check for vulnerabilities
-        uses: snyk/actions/docker@v0.4.0
+        uses: snyk/actions/docker@master
         with:
           image: ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
         env:
