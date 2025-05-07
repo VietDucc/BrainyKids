@@ -21,7 +21,7 @@ jobs:
 
       # Step 1: Snyk Security Scan
       - name: 🔍 Run Snyk to check for vulnerabilities
-        uses: snyk/actions/docker@v0.6.0
+        uses: snyk/actions/docker@v0.4.0
         with:
           image: ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
         env:
@@ -39,15 +39,15 @@ jobs:
           sudo apt-get update && sudo apt-get install -y arachni
           arachni --output-only-positives --report-save-path=arachni_report.afr https://brainy-kids-frontend.vercel.app/
 
-      # Step 4: SonarQube Code Quality Analysis
-      - name: 🔎 SonarQube Scan
-        uses: sonarsource/sonarcloud-github-action@v1.13
+      # Step 4: SonarCloud Code Quality Analysis
+      - name: 🔎 SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=VietDucc_BrainyKids
             -Dsonar.organization=your-organization
+            -Dsonar.projectKey=VietDucc_BrainyKids
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.sources=.
 
