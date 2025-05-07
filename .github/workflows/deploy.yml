@@ -40,10 +40,10 @@ jobs:
         continue-on-error: true
 
       # Step 3: Arachni Security Scan
-      - name: 🔍 Run Arachni with Docker
+      - name: 🔍 Run Arachni with Docker (correct way)
         run: |
-          docker run --rm arachni/arachni \
-            bash -c "/arachni/bin/arachni --output-only-positives --report-save-path=arachni_report.afr https://brainy-kids-frontend.vercel.app/"
+          docker run --rm -v $(pwd):/arachni/reports arachni/arachni \
+            bash -c "arachni https://brainy-kids-frontend.vercel.app/ --output-only-positives --report-save-path=/arachni/reports/report.afr"
         continue-on-error: true
 
 
