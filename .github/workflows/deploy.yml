@@ -32,27 +32,29 @@ jobs:
       - name: 🔍 Run Trivy to check for vulnerabilities
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+          chmod +x ./bin/trivy
+          export PATH=$PATH:$PWD/bin
+          echo "Trivy version:"
+          ./bin/trivy --version
           trivy image ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
         continue-on-error: true
 
       # Step 3: Arachni Security Scan
-      - name: 🔍 Run Arachni to check for vulnerabilities
+      - name: 🔍 Run Arachni with Docker
         run: |
-          sudo apt-get update && sudo apt-get install -y arachni
-          arachni --output-only-positives --report-save-path=arachni_report.afr https://brainy-kids-frontend.vercel.app/
+          docker run --rm arachni/arachni \
+            arachni --output-only-positives --report-save-path=arachni_report.afr https://brainy-kids-frontend.vercel.app/
+
         continue-on-error: true
 
       # Step 4: SonarCloud Code Quality Analysis
-      - name: 🔎 SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=your-organization
-            -Dsonar.projectKey=VietDucc_BrainyKids
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.sources=.
+      - name: 🔎 SonarCloud Scan (via Maven)
+        run: mvn verify org.sonarsource.scanner.maven:sonar:sonar \
+          -Dsonar.projectKey=VietDucc_BrainyKids \
+          -Dsonar.organization=your-organization \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
         continue-on-error: true
 
       - name: 🏗️ Build Docker Image
