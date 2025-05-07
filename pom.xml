@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.6.0</version>
+			<version>42.6.1</version>
 		</dependency>
 
 		<dependency>
@@ -78,7 +78,7 @@
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
-		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>

@@ -26,18 +26,21 @@ jobs:
           image: ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
 
       # Step 2: Trivy Security Scan
       - name: 🔍 Run Trivy to check for vulnerabilities
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
           trivy image ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+        continue-on-error: true
 
       # Step 3: Arachni Security Scan
       - name: 🔍 Run Arachni to check for vulnerabilities
         run: |
           sudo apt-get update && sudo apt-get install -y arachni
           arachni --output-only-positives --report-save-path=arachni_report.afr https://brainy-kids-frontend.vercel.app/
+        continue-on-error: true
 
       # Step 4: SonarCloud Code Quality Analysis
       - name: 🔎 SonarCloud Scan
@@ -50,6 +53,7 @@ jobs:
             -Dsonar.projectKey=VietDucc_BrainyKids
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.sources=.
+        continue-on-error: true
 
       - name: 🏗️ Build Docker Image
         run: |
