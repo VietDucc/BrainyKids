@@ -43,13 +43,13 @@ jobs:
       - name: 🔍 Run Arachni with Docker
         run: |
           docker run --rm arachni/arachni \
-            arachni --output-only-positives --report-save-path=arachni_report.afr https://brainy-kids-frontend.vercel.app/
-
+            bash -c "/arachni/bin/arachni --output-only-positives --report-save-path=arachni_report.afr https://brainy-kids-frontend.vercel.app/"
         continue-on-error: true
+
 
       # Step 4: SonarCloud Code Quality Analysis
       - name: 🔎 SonarCloud Scan (via Maven)
-        run: mvn verify org.sonarsource.scanner.maven:sonar:sonar \
+        run: mvn verify sonar:sonar \
           -Dsonar.projectKey=VietDucc_BrainyKids \
           -Dsonar.organization=your-organization \
           -Dsonar.host.url=https://sonarcloud.io \
