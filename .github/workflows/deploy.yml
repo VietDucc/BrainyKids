@@ -112,5 +112,6 @@ jobs:
 
             # Chạy docker-compose
             cd ~/BrainyKids
+            docker-compose down
             docker-compose pull
             docker-compose up -d
