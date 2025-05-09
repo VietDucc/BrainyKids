@@ -39,21 +39,22 @@ jobs:
           trivy image ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
         continue-on-error: true
 
-      # Step 3: Arachni Scan with secfigo/arachni
+      # Step 3: Arachni Scan with longle2003/arachni:v1.4-0.5.10
       - name: 🔍 Run Arachni Scan + Export HTML Report
         run: |
           mkdir -p /tmp/arachni-reports
           
           # Quét DAST
-          docker run --rm -v /tmp/arachni-reports:/tmp/ secfigo/arachni \
-            arachni https://brainy-kids-frontend.vercel.app/ \
+          docker run --rm -v /tmp/arachni-reports:/tmp/ longle2003/arachni:v1.4-0.5.10 \
+            bin/arachni https://brainy-kids-frontend.vercel.app/ \
             --output-only-positives \
             --report-save-path=/tmp/scan.afr
           
           # Tạo HTML từ kết quả quét
-          docker run --rm -v /tmp/arachni-reports:/tmp/ secfigo/arachni \
-            arachni_reporter /tmp/scan.afr --reporter=html:outfile=/tmp/scan.html.zip
+          docker run --rm -v /tmp/arachni-reports:/tmp/ longle2003/arachni:v1.4-0.5.10 \
+            bin/arachni_reporter /tmp/scan.afr --reporter=html:outfile=/tmp/scan.html.zip
           
+          # Cấp quyền cho báo cáo
           sudo chmod 777 /tmp/arachni-reports/scan.html.zip
 
         continue-on-error: true
