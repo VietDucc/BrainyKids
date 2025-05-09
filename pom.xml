@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if you prefer -->
-			<version>0.11.5</version>
+			<version>0.12.6</version>
 		</dependency>
 <!--		//Redis-->
 		<dependency>
