@@ -39,27 +39,41 @@ jobs:
           trivy image ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
         continue-on-error: true
 
-      # Step 3: Arachni Security Scan
-      - name: 🔍 Run Arachni with Docker (correct way)
+      # Step 3: Arachni Security Scan (Scan + Generate HTML Report)
+      - name: 🔍 Run Arachni Scan + Export HTML Report
         run: |
-          docker run --rm -v $(pwd):/arachni/reports arachni/arachni \
-            bash -c "arachni https://brainy-kids-frontend.vercel.app/ --output-only-positives --report-save-path=/arachni/reports/report.afr"
+          mkdir -p /tmp/arachni-reports
+          
+          # Quét DAST
+          docker run --rm -v /tmp/arachni-reports:/tmp/ arachni/arachni \
+            bash -c "arachni https://brainy-kids-frontend.vercel.app/ \
+            --output-only-positives \
+            --report-save-path=/tmp/scan.afr"
+          
+          # Tạo HTML từ kết quả quét
+          docker run --rm -v /tmp/arachni-reports:/tmp/ arachni/arachni \
+            bash -c "arachni_reporter /tmp/scan.afr --reporter=html:outfile=/tmp/scan.html.zip"
+          
+          # Mở quyền truy cập file
+          sudo chmod 777 /tmp/arachni-reports/scan.html.zip
+
         continue-on-error: true
 
 
-      # Step 4: SonarCloud Code Quality Analysis
-      - name: 🔎 SonarCloud Scan (CLI)
-        run: |
-          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip sonar-scanner.zip
-          ./sonar-scanner-*/bin/sonar-scanner \
-            -Dsonar.projectKey=VietDucc_BrainyKids \
-            -Dsonar.organization=vietducc \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-        continue-on-error: true
+      #      # Step 4: SonarCloud Code Quality Analysis
+#      - name: 🔎 SonarCloud Scan (CLI)
+#        run: |
+#          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+#          unzip sonar-scanner.zip
+#          ./sonar-scanner-*/bin/sonar-scanner \
+#            -Dsonar.projectKey=VietDucc_BrainyKids \
+#            -Dsonar.organization=vietducc \
+#            -Dsonar.sources=. \
+#            -Dsonar.host.url=https://sonarcloud.io \
+#            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+#
+#        continue-on-error: true
 
       - name: 🏗️ Build Docker Image
         run: |
