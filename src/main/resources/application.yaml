@@ -24,7 +24,7 @@ spring:
 #    password: "npg_lrsR5WUt7LEM"
 #    driver-class-name: org.postgresql.Driver
   datasource:
-    url: jdbc:postgresql://localhost:5432/mydb
+    url: jdbc:postgresql://192.168.100.102:5432/mydb
     username: myuser
     password: mypassword
     driver-class-name: org.postgresql.Driver
