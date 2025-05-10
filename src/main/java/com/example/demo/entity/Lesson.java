@@ -41,6 +41,10 @@ public class Lesson {
     @JsonManagedReference
     private List<Challenge> challenges = new ArrayList<>();
 
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Vocabulary> vocabularies = new ArrayList<>();
+
     public Lesson(String title, int orderIndex){
         this.title = title;
         this.orderIndex = orderIndex;
