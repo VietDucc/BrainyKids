@@ -19,6 +19,63 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # Step 1: Snyk Security Scan
+      - name: 🔍 Run Snyk to check for vulnerabilities
+        uses: snyk/actions/docker@master
+        with:
+          image: ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
+      # Step 2: Trivy Security Scan
+      - name: 🔍 Run Trivy to check for vulnerabilities
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+          chmod +x ./bin/trivy
+          export PATH=$PATH:$PWD/bin
+          echo "Trivy version:"
+          ./bin/trivy --version
+          trivy image ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+        continue-on-error: true
+
+      # Step 3: Arachni Scan with longle2003/arachni:v1.4-0.5.10
+      - name: 🔍 Run Arachni Scan + Export HTML Report
+        run: |
+          mkdir -p /tmp/arachni-reports
+          
+          # Quét DAST
+          docker run --rm -v /tmp/arachni-reports:/tmp/ longle2003/arachni:v1.4-0.5.10 \
+            bin/arachni https://brainy-kids-frontend.vercel.app/ \
+            --output-only-positives \
+            --report-save-path=/tmp/scan.afr
+          
+          # Tạo HTML từ kết quả quét
+          docker run --rm -v /tmp/arachni-reports:/tmp/ longle2003/arachni:v1.4-0.5.10 \
+            bin/arachni_reporter /tmp/scan.afr --reporter=html:outfile=/tmp/scan.html.zip
+          
+          # Cấp quyền cho báo cáo
+          sudo chmod 777 /tmp/arachni-reports/scan.html.zip
+
+        continue-on-error: true
+
+
+
+
+        #      # Step 4: SonarCloud Code Quality Analysis
+#      - name: 🔎 SonarCloud Scan (CLI)
+#        run: |
+#          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+#          unzip sonar-scanner.zip
+#          ./sonar-scanner-*/bin/sonar-scanner \
+#            -Dsonar.projectKey=VietDucc_BrainyKids \
+#            -Dsonar.organization=vietducc \
+#            -Dsonar.sources=. \
+#            -Dsonar.host.url=https://sonarcloud.io \
+#            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+#
+#        continue-on-error: true
+
       - name: 🏗️ Build Docker Image
         run: |
           docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/my-backend:latest .

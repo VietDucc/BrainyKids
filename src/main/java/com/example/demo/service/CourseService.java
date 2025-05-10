@@ -45,8 +45,19 @@ public List<Course> getAllCourses() {
     }
 
     public Course addCourse(Course course) {
-        return courseRepository.save(course);
+        // Thêm course vào cơ sở dữ liệu
+        Course savedCourse = courseRepository.save(course);
+
+        // Xóa dữ liệu cũ trong Redis
+        redisTemplate.delete(COURSE_KEY);
+
+        // Lưu lại danh sách khóa học mới vào Redis
+        List<Course> courses = courseRepository.findAll();
+        redisTemplate.opsForValue().set(COURSE_KEY, courses, 1, TimeUnit.HOURS); // Lưu lại với thời gian hết hạn nếu cần thiết
+
+        return savedCourse;
     }
+
 
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
