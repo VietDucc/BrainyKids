@@ -40,6 +40,7 @@ public class ChallengeService {
         Challenge challenge = Challenge
         .builder()
         .type(challengesRequest.getType())
+        .imgSrc(challengesRequest.getImgSrc())
         .question(challengesRequest.getQuestion())
         .orderChallenge(challengesRequest.getOrderChallenge())
         .lesson( lessonRepository.findById(challengesRequest.getLessonId())
