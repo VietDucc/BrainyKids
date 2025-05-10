@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.enums.Difficulty;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -23,6 +24,10 @@ public class Lesson {
     private Long id;
 
     private String title;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "difficulty")
+    private Difficulty difficulty;
 
     @Column(name = "order_lesson")
     private int orderIndex;
