@@ -15,6 +15,7 @@ import java.util.List;
 @Builder
 public class ChallengeRequest {
     private ChallengeType type;
+    private String imgSrc;
     private String question;
     private int orderChallenge;
     private long lessonId;

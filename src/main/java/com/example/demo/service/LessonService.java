@@ -35,6 +35,7 @@ public class LessonService {
         lesson.setTitle(lessonRequest.getTitle());
         lesson.setOrderIndex(lessonRequest.getOrderIndex());
         lesson.setUnit(unit);
+        lesson.setDifficulty(lessonRequest.getDifficulty());
         return lessonRepository.save(lesson);
     }
 
@@ -44,6 +45,7 @@ public class LessonService {
 
         Optional.ofNullable(lessonRequest.getTitle()).ifPresent(lesson::setTitle);
         Optional.ofNullable(lessonRequest.getOrderIndex()).ifPresent(lesson::setOrderIndex);
+        Optional.ofNullable(lessonRequest.getDifficulty()).ifPresent(lesson::setDifficulty);
 
         return lessonRepository.save(lesson);
     }
