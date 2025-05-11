@@ -27,6 +27,9 @@ public class Challenge {
 
     private ChallengeType type;
 
+    @Column(name = "img_src")
+    private String imgSrc;
+
     private String question;
 
     @Column(name = "order_challenge")
