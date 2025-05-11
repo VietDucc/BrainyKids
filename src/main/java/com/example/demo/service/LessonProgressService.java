@@ -41,25 +41,44 @@ public class LessonProgressService {
         List<LessonProgress> progressList = lessonProgressRepository.findByUser_ClerkUserIdAndLesson_Id(clerkUserId, lessonId);
 
         LessonProgress progress;
+        boolean isFirstTimeCompleted = false;
+
         if (!progressList.isEmpty()) {
-            // Nếu đã tồn tại, cập nhật trạng thái completed
             progress = progressList.get(0);
+
+            // Nếu trước đó chưa completed mà giờ mới completed, mới cộng điểm
+            if (!progress.isCompleted() && completed) {
+                isFirstTimeCompleted = true;
+            }
+
             progress.setCompleted(completed);
             progress.setDateLesson(new Date());
         } else {
-            // Nếu chưa có, tạo mới
+            // Chưa có thì tạo mới
             progress = new LessonProgress();
             progress.setUser(user);
             progress.setLesson(lesson);
             progress.setCompleted(completed);
             progress.setDateLesson(new Date());
+
+            if (completed) {
+                isFirstTimeCompleted = true;
+            }
         }
 
-        // 🔥 Gọi tự động tăng streak sau khi hoàn thành lesson
+        // Nếu là lần đầu completed thì cộng 10 điểm
+        if (isFirstTimeCompleted) {
+            int currentScore = user.getScore(); // Lấy điểm hiện tại
+            user.setScore(currentScore + 10);
+            userRepository.save(user); // Lưu lại user sau khi tăng điểm
+        }
+
+        // Gọi hàm tăng streak (tuỳ chọn)
         userProgressService.updateUserProgress(clerkUserId);
 
         return lessonProgressRepository.save(progress);
     }
+
 
 
     public List<LessonProgressResponse> getLessonProgressByUserId(String clerkUserId) {
