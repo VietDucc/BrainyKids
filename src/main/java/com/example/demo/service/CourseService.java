@@ -49,18 +49,23 @@ public List<Course> getAllCourses() {
         Course savedCourse = courseRepository.save(course);
 
         // Xóa dữ liệu cũ trong Redis
-        redisTemplate.delete(COURSE_KEY);
 
         // Lưu lại danh sách khóa học mới vào Redis
         List<Course> courses = courseRepository.findAll();
-        redisTemplate.opsForValue().set(COURSE_KEY, courses, 1, TimeUnit.HOURS); // Lưu lại với thời gian hết hạn nếu cần thiết
+        redisTemplate.opsForValue().set(COURSE_KEY, courses, 1, TimeUnit.HOURS);
 
         return savedCourse;
     }
 
 
     public void deleteCourse(Long id) {
+
         courseRepository.deleteById(id);
+        // Cap nhat lai Redis sau khi xoa
+        List<Course> courses = courseRepository.findAll();
+        redisTemplate.opsForValue().set(COURSE_KEY, courses, 1, TimeUnit.HOURS);
+
+
     }
 
     public Course updateCourse(Long id, CourseRequest courseRequest) {
@@ -70,6 +75,9 @@ public List<Course> getAllCourses() {
         Optional.ofNullable(courseRequest.getTitle()).ifPresent(course::setTitle);
         Optional.ofNullable(courseRequest.getImageSrc()).ifPresent(course::setImageSrc);
 
+        // Cập nhật lại Redis
+        List<Course> courses = courseRepository.findAll();
+        redisTemplate.opsForValue().set(COURSE_KEY, courses, 1, TimeUnit.HOURS);
 
         return courseRepository.save(course);
     }
