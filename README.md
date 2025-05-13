@@ -1,89 +1,89 @@
-🧠 Brainy-Kids Backend – Spring Boot REST API
-Welcome to the backend service of Brainy-Kids, an interactive language learning platform designed for children and language learners. This Spring Boot application provides secure, scalable, and feature-rich APIs to support learning modules, authentication, quiz handling, AI-generated content, and admin functionalities.
+# Brainy-Kids Backend – Interactive Learning API
 
-🚀 Features
-✅ User authentication & authorization (JWT + Clerk)
-✅ AI-powered features: vocabulary context generation, synonym/antonym lookup
-✅ Learning modules: blogs, flashcards, quizzes, videos, games
-✅ Custom word-connection game logic
-✅ Admin dashboard APIs for managing content and users
-✅ RESTful API design with Swagger documentation
-✅ Caching with Redis for optimized performance
-✅ Secure deployment with HTTPS, Docker, CI/CD
-✅ Security scanning using Trivy, Snyk, Arachni
+Welcome to the backend of **Brainy-Kids**, an interactive web platform designed for children and language learners. This Spring Boot application provides secure and scalable REST APIs for managing learning content, quizzes, AI-powered tools, and user data.
 
-🌐 API Documentation
-Swagger UI:
-👉 https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html
+## 🚀 Features
 
-🛠️ Tech Stack
-Layer	Technology
-Language	Java 17
-Framework	Spring Boot (RESTful API)
-Auth	Clerk, JWT
-Database	PostgreSQL
-Caching	Redis
-API Docs	Swagger (OpenAPI), Postman
-Deployment	Docker, Docker Compose
-CI/CD	GitHub Actions
-Security	HTTPS, Trivy, Snyk, Arachni
-OS	Ubuntu Server
+- ✅ User authentication and role-based access control using Clerk and JWT
+- ✅ Learning modules: blogs, flashcards, quizzes, videos
+- ✅ Word-connection game logic to reinforce vocabulary
+- ✅ AI-powered content generation: stories, diaries, synonyms/antonyms
+- ✅ Admin dashboard APIs to manage users and content
+- ✅ RESTful APIs with interactive Swagger documentation
+- ✅ Redis caching layer to boost performance
+- ✅ Secure HTTPS communication and containerized deployment
+- ✅ Automated CI/CD pipeline with GitHub Actions
+- ✅ Vulnerability scanning with Trivy, Snyk, and Arachni
 
-📁 Project Structure
-📦brainy-kids-backend
- ┣ 📂src/main/java/com/brainykids
- ┃ ┣ 📂config             # Security & App configuration
- ┃ ┣ 📂controller         # REST API controllers
- ┃ ┣ 📂dto                # Data transfer objects
- ┃ ┣ 📂entity             # JPA entities
- ┃ ┣ 📂repository         # Spring Data JPA interfaces
- ┃ ┣ 📂service            # Business logic
- ┃ ┗ 📜BrainyKidsApp.java # Main Spring Boot entry
- ┣ 📂resources
- ┃ ┣ 📜application.yml    # Environment config
- ┃ ┗ 📜static/             # Static assets (if any)
- ┣ 📜Dockerfile
- ┣ 📜docker-compose.yml
- ┗ 📜README.md
-🔐 Authentication & Authorization
-Clerk is used as the identity provider (frontend handles UI)
-Backend verifies JWT tokens from Clerk and grants role-based access
-Middleware security filters ensure safe API access
+## 📚 API Documentation
 
-⚙️ Deployment
-This project is containerized and deployed via:
-Docker + Docker Compose: for local and production containers
-GitHub Actions: for automatic CI/CD on push
-HTTPS enabled for secure connections
+- Swagger UI: [https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html](https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html)
 
-🧪 Security
-🔍 Vulnerability Scanning:
+## 🛠️ Tech Stack
 
-Trivy: image scanning for known CVEs
+- **Language**: Java 17
+- **Framework**: Spring Boot
+- **Authentication**: Clerk (frontend), JWT (backend)
+- **Database**: PostgreSQL
+- **Cache**: Redis
+- **API Documentation**: Swagger (OpenAPI), Postman
+- **Deployment**: Docker, Docker Compose
+- **CI/CD**: GitHub Actions
+- **Security Tools**: Trivy, Snyk, Arachni
+- **Operating System**: Ubuntu Server
 
-Snyk: library dependency scanning
+## 🔐 Authentication & Authorization
 
-Arachni: runtime web app security validation
+- Users authenticate through Clerk (frontend)
+- JWT tokens are verified by the backend
+- Role-based access: regular users vs admin
+- Secure endpoints using Spring Security
 
-📦 Installation (Local Development)
-# Clone the repo
+## 🚢 Deployment Instructions
+
+```bash
+# Clone the repository
 git clone https://github.com/VietDucc/BrainyKids.git
-
 cd BrainyKids
 
-# Run with Docker Compose
+# Run with Docker
 docker-compose up --build
-Ensure PostgreSQL and Redis are accessible, or use the provided docker-compose.yml.
+ ```
+🛡️ Security Practices
+Trivy: Scans Docker images for vulnerabilities
 
-🧠 Contributors
-👨‍💻 Team size: 4 members
-🔗 Project lead frontend repo: https://github.com/VietDucc/brainy-kids-frontend
+Snyk: Detects known issues in dependencies
 
-🔗 Useful Links
-🌐 Live Web App: https://brainy-kids-frontend.vercel.app
+Arachni: Tests for web application security risks
 
-🔐 Admin Dashboard: https://brainy-kids-frontend.vercel.app/admin
+All HTTP traffic is secured via HTTPS
 
-📘 Frontend GitHub: https://github.com/VietDucc/brainy-kids-frontend
+👥 Project Team & Responsibilities
+- Team size: 4 members
 
-📘 Backend GitHub: https://github.com/VietDucc/BrainyKids
+- Duration: 3 months
+
+Your responsibilities:
+
+-   Designed and implemented core REST APIs using Spring Boot
+
+- Integrated Clerk for authentication and configured JWT validation
+
+- Maintained documentation using Swagger
+
+- Optimized backend performance with Redis caching
+
+- Set up CI/CD with GitHub Actions for automated deployment
+
+- Performed security testing using Trivy, Snyk, and Arachni
+
+- Assisted team coordination, progress tracking, and task delivery
+
+## 🔗 Related Links
+🌐 Web App: https://brainy-kids-frontend.vercel.app
+
+🛠️ Admin Panel: https://brainy-kids-frontend.vercel.app/admin
+
+💻 Frontend Repository: https://github.com/VietDucc/brainy-kids-frontend
+
+⚙️ Backend Repository: https://github.com/VietDucc/BrainyKids
