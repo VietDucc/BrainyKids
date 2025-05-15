@@ -17,7 +17,7 @@ Welcome to the backend of **Brainy-Kids**, an interactive web platform designed 
 
 ## 📚 API Documentation
 
-- Swagger UI: [https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html](https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html)
+- Swagger UI: [https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html](https://vietducc.id.vn/demo/swagger-ui/index.html#)
 
 ## 🛠️ Tech Stack
 
