@@ -7,5 +7,5 @@ public enum ChallengeType {
     SINGLE,
     MULTI,
     NONE,
-    ALL,
+    ALL
 }

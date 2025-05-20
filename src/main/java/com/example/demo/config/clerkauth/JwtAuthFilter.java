@@ -1,12 +1,16 @@
 package com.example.demo.config.clerkauth;
 
+import com.example.demo.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,10 +24,14 @@ import java.security.Key;
 import java.security.PublicKey;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
+    @Autowired
+    private UserRepository userRepository; // Inject UserRepository để tìm kiếm người dùng
     @Value("${clerk.public-key}") // Load Public Key của Clerk từ application.properties
     private String clerkPublicKey;
 
@@ -40,10 +48,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7); // Remove "Bearer "
         System.out.println("Received token: " + token);
 
-        // For now, let's extract user ID from Clerk token without validation
-        // This is temporary to get things working - you should implement proper validation
         try {
-            // For debugging purposes, print the token format
             String[] parts = token.split("\\.");
             System.out.println("Token has " + parts.length + " parts");
 
@@ -52,11 +57,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String userId = extractUserIdFromToken(token);
 
             if (userId != null) {
-                UserDetails userDetails = new User(userId, "", Collections.emptyList());
+                com.example.demo.entity.User user = userRepository.findByClerkUserId(userId)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                String role = user.getRole();
+                //Chuyen role thanh GrantedAuthority
+                List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
+
+                UserDetails userDetails = new User(userId, "", authorities);
+
+                // tao authentication token
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
+                        userDetails, null, authorities
                 );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
                 System.out.println("Setting authentication for user: " + userId);
             }
@@ -69,24 +82,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private String extractUserIdFromToken(String token) {
         try {
-            // This is a simplified extractor - just to get things working
-            // Decode the first part of the token (if it's a JWT-like format)
             String[] parts = token.split("\\.");
+            if (parts.length < 2) return null;
 
-            if (parts.length >= 1) {
-                // Try to get user ID from header or first part
-                String decoded = new String(Base64.getUrlDecoder().decode(parts[0]));
-                System.out.println("Decoded token part: " + decoded);
+            String payloadJson = new String(Base64.getUrlDecoder().decode(parts[1]));
+            System.out.println("Decoded payload: " + payloadJson);
 
-                // For now, return a placeholder user ID
-                return "clerk-user"; // You'll need to implement proper extraction
-            }
-            return null;
+            // Dùng JSON lib để parse
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            Map<String, Object> payload = mapper.readValue(payloadJson, Map.class);
+
+            return (String) payload.get("sub"); // Đây chính là Clerk User ID
         } catch (Exception e) {
             System.err.println("Error extracting user ID: " + e.getMessage());
             return null;
         }
     }
+
 
     private String extractUserIdFromClerkJWT(String token) {
         Claims claims = Jwts.parserBuilder()

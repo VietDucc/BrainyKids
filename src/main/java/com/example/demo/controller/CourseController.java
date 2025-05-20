@@ -5,6 +5,7 @@ import com.example.demo.entity.Course;
 import com.example.demo.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class CourseController {
     private CourseService courseService;
 
     // Lấy danh sách tất cả khóa học
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping
     public List<Course> getAllCourses() {
         System.out.println("hello"); // In ra chuỗi "hello"
@@ -33,6 +35,7 @@ public class CourseController {
     }
 
     // Thêm một khóa học mới
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public Course addCourse(@RequestBody Course course) {
         return courseService.addCourse(course);
