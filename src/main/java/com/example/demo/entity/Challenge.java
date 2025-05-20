@@ -25,6 +25,7 @@ public class Challenge {
     @JsonBackReference
     private Lesson lesson;
 
+    @Enumerated(EnumType.STRING)
     private ChallengeType type;
 
     @Column(name = "img_src")
