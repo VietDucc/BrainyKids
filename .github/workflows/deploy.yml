@@ -44,21 +44,43 @@ jobs:
         run: |
           mkdir -p /tmp/arachni-reports
           
-          # Quét DAST
+          echo "Start Arachni scan..."
           docker run --rm -v /tmp/arachni-reports:/tmp/ longle2003/arachni:v1.4-0.5.10 \
             bin/arachni https://brainy-kids-frontend.vercel.app/ \
             --output-only-positives \
             --report-save-path=/tmp/scan.afr
-          
-          # Tạo HTML từ kết quả quét
+
+          echo "Scan done. Generating HTML report..."
           docker run --rm -v /tmp/arachni-reports:/tmp/ longle2003/arachni:v1.4-0.5.10 \
             bin/arachni_reporter /tmp/scan.afr --reporter=html:outfile=/tmp/scan.html.zip
-          
-          # Cấp quyền cho báo cáo
+
+          echo "Set permissions for report file"
           sudo chmod 777 /tmp/arachni-reports/scan.html.zip
+
+          echo "Listing /tmp/arachni-reports contents:"
+          ls -l /tmp/arachni-reports
 
         continue-on-error: true
 
+      - name: Check Arachni report zip file before unzip
+        run: |
+          echo "Checking report zip file:"
+          ls -lh /tmp/arachni-reports/scan.html.zip || echo "File not found!"
+
+      - name: Extract Arachni HTML report
+        run: |
+          unzip /tmp/arachni-reports/scan.html.zip -d /tmp/arachni-reports/html-report
+
+      - name: Check extracted report contents
+        run: |
+          echo "Extracted files:"
+          ls -l /tmp/arachni-reports/html-report
+
+      - name: Deploy Arachni report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: /tmp/arachni-reports/html-report
 
 
 
