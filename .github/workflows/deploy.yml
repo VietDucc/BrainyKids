@@ -92,23 +92,23 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 8022
           script: |
-            # Cài git nếu chưa có
-            which git || sudo apt-get update && sudo apt-get install -y git
+#            # Cài git nếu chưa có
+#            which git || sudo apt-get update && sudo apt-get install -y git
 
             # Cài docker-compose nếu chưa có
             which docker-compose || sudo apt-get update && sudo apt-get install -y docker-compose
 
-            # Thêm repo vào git safe directory
-            git config --global --add safe.directory /home/${{ secrets.SERVER_USER }}/BrainyKids
+#            # Thêm repo vào git safe directory
+#            git config --global --add safe.directory /home/${{ secrets.SERVER_USER }}/BrainyKids
 
-            # Pull repo
-            cd ~
-            if [ ! -d "BrainyKids" ]; then
-              git clone https://github.com/VietDucc/BrainyKids.git
-            else
-              cd BrainyKids
-              git pull origin dev
-            fi
+#            # Pull repo
+#            cd ~
+#            if [ ! -d "BrainyKids" ]; then
+#              git clone https://github.com/VietDucc/BrainyKids.git
+#            else
+#              cd BrainyKids
+#              git pull origin dev
+#            fi
 
             # Chạy docker-compose
             cd ~/BrainyKids
