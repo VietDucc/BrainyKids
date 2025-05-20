@@ -42,12 +42,14 @@ public class CourseController {
     }
 
     // Cập nhật thông tin khóa học theo ID
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public Course updateCourse(@PathVariable Long id, @RequestBody CourseRequest courseRequest) {
       return courseService.updateCourse(id, courseRequest);
     }
 
     // Xóa khóa học theo ID
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);

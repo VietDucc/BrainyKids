@@ -115,3 +115,19 @@ jobs:
             docker-compose down
             docker-compose pull
             docker-compose up -d
+            
+            # Chờ backend khởi động 
+            sleep 10
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 🔧 Run API Tests (JUnit + RestAssured)
+        env:
+          API_BASE_URL: "https://duc-spring.ngodat0103.live"
+          JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+        run: mvn test
+
