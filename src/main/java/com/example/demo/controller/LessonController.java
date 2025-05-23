@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.ChallengeRequest;
 import com.example.demo.dto.request.LessonRequest;
 import com.example.demo.entity.Challenge;
 import com.example.demo.entity.Lesson;
-import com.example.demo.service.ChallengeService;
 import com.example.demo.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Unit;
-import com.example.demo.entity.Course;
-import com.example.demo.repository.UnitRepository;
-import com.example.demo.repository.CourseRepository;
 import com.example.demo.dto.request.UnitRequest;
+import com.example.demo.entity.Course;
+import com.example.demo.entity.Unit;
+import com.example.demo.repository.CourseRepository;
+import com.example.demo.repository.UnitRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
