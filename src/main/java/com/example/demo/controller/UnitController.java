@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.UnitRequest;
+import com.example.demo.dto.response.UnitResponse;
 import com.example.demo.entity.Unit;
 import com.example.demo.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class UnitController {
     private UnitService unitService;
 
     @GetMapping("/{courseId}")
-    public List<Unit> getUnitsByCourseId(@PathVariable Long courseId) {
+    public List<UnitResponse.UnitDTO> getUnitsByCourseId(@PathVariable Long courseId) {
         return unitService.getUnitsByCourseId(courseId);
     }
 

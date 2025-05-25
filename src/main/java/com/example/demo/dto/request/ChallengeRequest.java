@@ -1,7 +1,5 @@
 package com.example.demo.dto.request;
 
-import com.example.demo.entity.ChallengeOption;
-import com.example.demo.entity.ChallengeProgress;
 import com.example.demo.enums.ChallengeType;
 import lombok.Builder;
 import lombok.Getter;

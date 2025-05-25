@@ -2,9 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.dto.request.UserRequest;
 import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo.repository.UserRepository;
 
 @Service
 public class UserService {
@@ -19,6 +19,7 @@ public class UserService {
         user.setProfile_image_url(userRequest.getData().getProfile_image_url());
         user.setScore(0);
         user.setNewUser(true);
+        user.setRole("USER");
         // Lấy email đầu tiên (nếu có)
         if (userRequest.getData().getEmail_addresses() != null && !userRequest.getData().getEmail_addresses().isEmpty()) {
             user.setEmail(userRequest.getData().getEmail_addresses().get(0).getEmail_address());

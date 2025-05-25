@@ -27,6 +27,9 @@ public class User {
     private int score = 0;
     private boolean isNewUser ;
 
+    @Column(nullable = false)
+    private String role = "USER";
+
     public User(String clerkUserId, String firstName, String lastName, String email, String profile_image_url, int score) {
         this.clerkUserId = clerkUserId;
         this.firstName = firstName;
@@ -35,6 +38,7 @@ public class User {
         this.email = email;
         this.score = score;
         this.isNewUser = isNewUser;
+        this.role ="USER";
 
 
     }

@@ -2,10 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Deck;
 import com.example.demo.repository.DeckRepository;
+import com.example.demo.service.DeckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.service.DeckService;
 
 import java.util.List;
 
