@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Builder
@@ -28,8 +30,13 @@ public class ChallengeService {
 
     @Autowired
     private LessonRepository lessonRepository;
-
+    @Autowired
     private ChallengeOptionRepository challengeOptionRepository;
+
+    @Autowired
+    private ChallengeCacheService challengeCacheService;
+
+
 
     public List<Challenge> getChallengeByLessonId(Long lessonId) {
         return challengeRepository.findByLesson_Id(lessonId);
@@ -54,8 +61,10 @@ public class ChallengeService {
         .build();
 
         challenge.setChallengesOption(buildChallengeOptions(challenge, challengesRequest));
-
         challengeRepository.save(challenge);
+
+        challengeCacheService.refreshChallengeByLessonId(challengesRequest.getLessonId());
+
         return challenge.getId();
     }
 
@@ -64,11 +73,13 @@ public class ChallengeService {
              Workbook workbook = new XSSFWorkbook(is)) {
 
             Sheet sheet = workbook.getSheetAt(0);
+            Set<Long> updatedLessonIds = new HashSet<>();
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
                 if (row == null) continue;
 
                 long lessonId = (long) row.getCell(0).getNumericCellValue();
+                updatedLessonIds.add(lessonId);
                 String typeStr = row.getCell(1).getStringCellValue();
                 String question = row.getCell(2).getStringCellValue();
 
@@ -121,6 +132,8 @@ public class ChallengeService {
                 createChallenge(builder.build());
             }
 
+            updatedLessonIds.forEach(challengeCacheService::refreshChallengeByLessonId);
+
         } catch (IOException e) {
             throw new RuntimeException("Failed to import challenges from Excel", e);
         }
@@ -148,18 +161,6 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new RuntimeException("Challenge not found"));
 
-//        challenge.setType(challengeRequest.getType());
-//        challenge.setQuestion(challengeRequest.getQuestion());
-//        challenge.setOrderChallenge(challengeRequest.getOrderChallenge());
-//        if(challenge.getChallengesOption() != null)
-//        {
-//            challengeOptionRepository.deleteAll(challenge.getChallengesOption());
-//        }
-//        challenge.setChallengesOption(buildChallengeOptions(challenge, challengeRequest));
-//
-//        challengeRepository.save(challenge);
-//
-//        return challenge.getId();
 
         deleteChallenge(challengeId);
         return createChallenge(challengeRequest);
@@ -173,8 +174,12 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new RuntimeException("Challenge not found"));
 
+        Long lessonId = challenge.getLesson().getId();
+
         challengeOptionRepository.deleteAll(challenge.getChallengesOption());
         challengeRepository.delete(challenge);
+
+        challengeCacheService.refreshChallengeByLessonId(lessonId);
         return challenge.getId();
     }
 
