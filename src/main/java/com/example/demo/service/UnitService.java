@@ -7,6 +7,7 @@ import com.example.demo.entity.Unit;
 import com.example.demo.mapper.UnitMapper;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.UnitRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class UnitService {
     }
 
     // Lấy danh sách Unit theo Course ID
+    @Cacheable(value="unitsByCourse", key="#courseId")
     public List<UnitResponse.UnitDTO> getUnitsByCourseId(Long courseId) {
         return unitRepository.findByCourseId(courseId).stream()
                 .map(UnitMapper::toDTO)
