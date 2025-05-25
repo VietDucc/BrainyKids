@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.LessonRequest;
+import com.example.demo.dto.response.ChallengeDTO;
+import com.example.demo.dto.response.LessonDetailResponse;
 import com.example.demo.entity.Challenge;
 import com.example.demo.entity.Lesson;
 import com.example.demo.service.LessonService;
@@ -46,7 +48,9 @@ public class LessonController {
      * @return
      */
     @GetMapping("/lesson/{lessonId}")
-    public List<Challenge> getChallengeByLessonId(@PathVariable Long lessonId) {
-        return lessonService.getChallengeByLessonId(lessonId);
+    public LessonDetailResponse getChallengeByLessonId(@PathVariable Long lessonId) {
+        lessonService.cacheLessonAdnNext10(lessonId);
+
+        return lessonService.getLessonDetailByLessonId(lessonId);
     }
 }
