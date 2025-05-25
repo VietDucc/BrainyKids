@@ -4,8 +4,10 @@ import com.example.demo.dto.request.CommentRequest;
 import com.example.demo.dto.response.CommentResponse;
 import com.example.demo.entity.Blog;
 import com.example.demo.entity.Comment;
+import com.example.demo.entity.User;
 import com.example.demo.repository.BlogRepository;
 import com.example.demo.repository.CommentRepository;
+import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final BlogRepository blogRepository;
+    private final UserRepository userRepository;
 
     public CommentResponse createComment(Long blogId, CommentRequest request, String authorId) {
 
@@ -50,6 +53,7 @@ public class CommentService {
 
         Comment parentComment = commentRepository.findById(commentId).orElse(null);
 
+        assert parentComment != null;
         Comment reply = Comment.builder()
                 .content(request.getContent())
                 .blog(parentComment.getBlog())
@@ -71,6 +75,7 @@ public class CommentService {
 
         Comment comment = commentRepository.findById(id).orElse(null);
 
+        assert comment != null;
         if (!comment.getAuthorId().equals(authorId)) {
             throw new RuntimeException("You are not allowed to edit this comment");
         }
@@ -90,11 +95,10 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-
     public List<CommentResponse> getCommentsByBlogIdWithReplies(Long blogId) {
-        List<Comment> topLEvelComments = commentRepository.findByBlogIdAndParentCommentIsNull(blogId);
+        List<Comment> topLevelComments = commentRepository.findByBlogIdAndParentCommentIsNull(blogId);
 
-        return topLEvelComments.stream()
+        return topLevelComments.stream()
                 .map(this::mapToResponseWithReplies)
                 .collect(Collectors.toList());
     }
@@ -102,6 +106,7 @@ public class CommentService {
     public void deleteComment(Long commentId, String authorId) {
         Comment comment = commentRepository.findById(commentId).orElse(null);
 
+        assert comment != null;
         if (!comment.getAuthorId().equals(authorId)) {
             throw new RuntimeException("You are not allowed to delete this comment");
         }
@@ -125,12 +130,24 @@ public class CommentService {
     public CommentResponse mapToResponseWithReplies(Comment comment) {
         List<Comment> replies = commentRepository.findByParentCommentId(comment.getId());
 
+        User author = userRepository.findByClerkUserId(comment.getAuthorId()).orElse(null);
+
+        String authorName = author != null
+                ? author.getFirstName() + " " + author.getLastName()
+                : "Unknown Author";
+
+        String authorImg = author != null
+                ?author.getProfile_image_url()
+                : "";
+
         CommentResponse.CommentResponseBuilder builder = CommentResponse.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
                 .authorId(comment.getAuthorId())
+                .authorName(authorName)
+                .authorImg(authorImg)
                 .blogId(comment.getBlog() != null ? comment.getBlog().getId() : null)
                 .parentCommentId(comment.getParentComment() == null ? null : comment.getParentComment().getId());
         if (!replies.isEmpty()) {

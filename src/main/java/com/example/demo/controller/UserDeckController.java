@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.response.UserDeckResponse;
 import com.example.demo.entity.UserDeck;
 import com.example.demo.repository.UserDeckRepository;
 import com.example.demo.service.UserDeckService;
@@ -19,13 +20,18 @@ public class UserDeckController {
     }
 
     @GetMapping
-    public List<UserDeck> getUserDecks(@PathVariable String clerkUserId) {
+    public List<UserDeckResponse> getUserDecks(@PathVariable String clerkUserId) {
         return userDeckService.getAllDecksByUserId(clerkUserId);
     }
 
     @PostMapping
     public UserDeck createUserDeck(@PathVariable String clerkUserId ,@RequestBody UserDeck userDeck) {
         return userDeckService.createDeck(clerkUserId, userDeck);
+    }
+
+    @PutMapping
+    public UserDeck updateUserDeck(@PathVariable String clerkUserId, @RequestBody Long id, @RequestBody UserDeck userDeck) {
+        return userDeckService.updateDeck(clerkUserId, id, userDeck);
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.response.UserDeckResponse;
 import com.example.demo.entity.UserDeck;
 import com.example.demo.repository.UserDeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,21 @@ public class UserDeckService {
     public UserDeckService(UserDeckRepository userDeckRepository) {
         this.userDeckRepository = userDeckRepository;
     }
-    public List<UserDeck> getAllDecksByUserId(String clerkUserId) {
-        return userDeckRepository.findAllByClerkUserId(clerkUserId);
+    public List<UserDeckResponse> getAllDecksByUserId(String clerkUserId) {
+        return userDeckRepository.findAllByClerkUserId(clerkUserId).stream().map(deck -> new UserDeckResponse(deck.getId(), deck.getName(), deck.getClerkUserId())).toList();
     }
     public UserDeck createDeck(String clerkUserId, UserDeck userDeck) {
         userDeck.setClerkUserId(clerkUserId);
         return userDeckRepository.save(userDeck);
+    }
+    public UserDeck updateDeck(String clerkUserId, Long id, UserDeck updatedDeck) {
+        return userDeckRepository.findById(id).map(existingDeck -> {
+            if (!existingDeck.getClerkUserId().equals(clerkUserId)) {
+                throw new IllegalArgumentException("clerk user id does not match");
+            }
+            existingDeck.setName(updatedDeck.getName());
+            return userDeckRepository.save(existingDeck);
+        }).orElseThrow(() -> new IllegalArgumentException("Deck not found with id: " + id));
     }
     public void deleteDeck(Long id) {
         userDeckRepository.deleteById(id);

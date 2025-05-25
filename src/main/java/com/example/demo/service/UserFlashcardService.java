@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,6 +55,13 @@ public class UserFlashcardService {
                 .build();
 
         return userFlashCardRepository.save(newCard);
+    }
+    public List<UserFlashcard> createCardsInDeck(List<UserFlashCardRequest> requests, String clerkUserId) {
+        List<UserFlashcard> createdCards = new ArrayList<>();
+        for (UserFlashCardRequest req : requests) {
+            createdCards.add(createCardInDeck(req, clerkUserId));
+        }
+        return createdCards;
     }
     public UserFlashcard updateUserFlashcard(Long id, UserFlashCardRequest request, String clerkUserId) {
         UserFlashcard existingCard = userFlashCardRepository.findById(id)

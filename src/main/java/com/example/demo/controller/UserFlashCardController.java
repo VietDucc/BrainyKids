@@ -37,6 +37,11 @@ public class UserFlashCardController {
         return userFlashcardService.createCardInDeck(request, clerkUserId);
     }
 
+    @PostMapping("/bulk")
+    public List<UserFlashcard> createMultipleUserFlashcards(@PathVariable String clerkUserId, @RequestBody List<UserFlashCardRequest> userFlashCardRequests) {
+        return userFlashcardService.createCardsInDeck(userFlashCardRequests, clerkUserId);
+    }
+
     @PutMapping("/{id}")
     public UserFlashcard updateCard(@PathVariable Long id, @RequestBody UserFlashCardRequest flashcardDTO, @PathVariable("clerkUserId") String clerkUserId) {
         return userFlashcardService.updateUserFlashcard(id, flashcardDTO, clerkUserId);
