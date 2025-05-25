@@ -25,6 +25,6 @@ public class Deck {
     private String name;
 
     @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
+    @JsonManagedReference
     private List<FlashCard> flashCards = new ArrayList<>();
 }
