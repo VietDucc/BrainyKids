@@ -15,6 +15,9 @@ public class BlogResponse {
     private String imageUrl;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String authorId;
     private List<CommentResponse> comments;
+
+    private String authorId;
+    private String authorName;
+    private String authorImg;
 }
