@@ -10,7 +10,7 @@ public class CloudinaryConfig {
 
     @Bean
     public Cloudinary cloudinary() {
-        Dotenv dotenv = Dotenv.load();
-        return new Cloudinary(dotenv.get("CLOUDINARY_URL"));
+        String cloudinaryUrl = "cloudinary://724727327455295:dR7dEItKsB68mYR2jDewZe4YZ9w@dk4lf4hcu";
+        return new Cloudinary(cloudinaryUrl);
     }
 }
