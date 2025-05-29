@@ -34,7 +34,9 @@ public class VnpayController {
     public Map<String, String> submidOrder(@RequestParam("amount") int orderTotal,
                                            @RequestParam("orderInfo") String orderInfo,
                                            HttpServletRequest request) {
-        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+//        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        String baseUrl = "https://duc-spring.ngodat0103.live/demo";
+
         String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
 
         Map<String, String> response = new HashMap<>();
