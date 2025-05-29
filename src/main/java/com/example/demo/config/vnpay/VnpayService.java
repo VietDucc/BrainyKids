@@ -18,18 +18,20 @@ public class VnpayService {
 
     public String createPaymentUrl(long amount, String orderInfo, String orderType, String ipAddr) {
         try {
+            // 1. Khởi tạo map và chỉ put những trường cần thiết
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", "2.1.0");
             vnp_Params.put("vnp_Command", "pay");
-            vnp_Params.put("vnp_TmnCode", safe(config.getTmnCode()));
+            vnp_Params.put("vnp_TmnCode", config.getTmnCode());
             vnp_Params.put("vnp_Amount", String.valueOf(amount * 100));
             vnp_Params.put("vnp_CurrCode", "VND");
             vnp_Params.put("vnp_TxnRef", String.valueOf(System.currentTimeMillis()));
-            vnp_Params.put("vnp_OrderInfo", safe(orderInfo));
+            vnp_Params.put("vnp_OrderInfo", orderInfo);
             vnp_Params.put("vnp_Locale", "vn");
-            vnp_Params.put("vnp_ReturnUrl", safe(config.getReturnUrl()));
-            vnp_Params.put("vnp_IpAddr", safe(ipAddr));
-            vnp_Params.put("vnp_OrderType", safe(orderType));
+            vnp_Params.put("vnp_ReturnUrl", config.getReturnUrl());
+//            vnp_Params.put("vnp_IpAddr", ipAddr);
+            vnp_Params.put("vnp_IpAddr", "127.0.0.1");
+            vnp_Params.put("vnp_OrderType", orderType);
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
             formatter.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
@@ -41,14 +43,14 @@ public class VnpayService {
             String vnp_ExpireDate = formatter.format(expire.getTime());
             vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
-            // Xóa các key có giá trị null/rỗng
+            // 2. Xóa các key có giá trị null/rỗng (phải chắc chắn)
             vnp_Params.entrySet().removeIf(e -> e.getValue() == null || e.getValue().isEmpty());
 
-            // Sort keys
+            // 3. Sort keys
             List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
             Collections.sort(fieldNames);
 
-            // Build hashData (KHÔNG encode)
+            // 4. Build hashData (KHÔNG encode)
             StringBuilder hashData = new StringBuilder();
             StringBuilder query = new StringBuilder();
 
@@ -69,26 +71,20 @@ public class VnpayService {
                 }
             }
 
-            String vnp_SecureHash = hmacSHA512(safe(config.getHashSecret()), hashData.toString());
-            String paymentUrl = safe(config.getPayUrl()) + "?" + query.toString() + "&vnp_SecureHash=" + vnp_SecureHash;
-
-            // Log debug
+            // 5. Tính hash đúng chuẩn
+            String vnp_SecureHash = hmacSHA512(config.getHashSecret(), hashData.toString());
+            String paymentUrl = config.getPayUrl() + "?" + query.toString() + "&vnp_SecureHash=" + vnp_SecureHash;
+// Thêm log debug ở đây!
             System.out.println("HashData: " + hashData);
-            System.out.println("Secret: " + safe(config.getHashSecret()));
+            System.out.println("Secret: " + config.getHashSecret());
             System.out.println("Hash: " + vnp_SecureHash);
             System.out.println("PaymentURL: " + paymentUrl);
-
             return paymentUrl;
 
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
-    }
-
-    // Helper: trả về "" nếu null, trim nếu có giá trị
-    private String safe(String s) {
-        return s == null ? "" : s.trim();
     }
 
     private String hmacSHA512(String key, String data) throws Exception {

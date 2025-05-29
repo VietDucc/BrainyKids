@@ -53,7 +53,7 @@ logging:
     io.lettuce.core: DEBUG
     
 vnpay:
-  tmnCode: 5GHI8U5R
-  hashSecret: 066Y3X83V25QHTYH8OUTD1XX90ZW1AQY
+  tmnCode: C8APZ1UO
+  hashSecret: GONRPHP7A9ZAUFXZUOM809Z2O3938AYR
   payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
   returnUrl: http://localhost:8080/demo/return_url
