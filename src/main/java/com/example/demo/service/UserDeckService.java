@@ -22,7 +22,8 @@ public class UserDeckService {
         userDeck.setClerkUserId(clerkUserId);
         return userDeckRepository.save(userDeck);
     }
-    public UserDeck updateDeck(String clerkUserId, Long id, UserDeck updatedDeck) {
+    public UserDeck updateDeck(String clerkUserId, UserDeck updatedDeck) {
+        Long id = updatedDeck.getId();
         return userDeckRepository.findById(id).map(existingDeck -> {
             if (!existingDeck.getClerkUserId().equals(clerkUserId)) {
                 throw new IllegalArgumentException("clerk user id does not match");

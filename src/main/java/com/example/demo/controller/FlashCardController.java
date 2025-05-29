@@ -4,6 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.FlashCard;
 import com.example.demo.service.FlashCardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,11 +32,13 @@ public class FlashCardController {
         return flashCardService.getCard(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public FlashCard createFlashCard(@RequestBody FlashCard flashCard) {
         return flashCardService.saveCard(flashCard);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public FlashCard updateFlashCard(@PathVariable Long id, @RequestBody FlashCard flashCard) {
         FlashCard existing = flashCardService.getCard(id);
@@ -45,6 +48,7 @@ public class FlashCardController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteFlashCard(@PathVariable Long id) {
         flashCardService.deleteCard(id);
