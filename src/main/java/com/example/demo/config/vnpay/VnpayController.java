@@ -35,7 +35,7 @@ public class VnpayController {
                                            @RequestParam("orderInfo") String orderInfo,
                                            HttpServletRequest request) {
 //        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        String baseUrl = "https://duc-spring.ngodat0103.live/demo";
+        String baseUrl = "https://brainykidslearn.id.vn/";
 
         String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
 
@@ -63,6 +63,7 @@ public class VnpayController {
     }
     @GetMapping("/IPN")
     public ResponseEntity<Map<String, String>> receiveIPN(@RequestParam Map<String, String> params) {
+        System.out.println("Received IPN callback with params: " + params);
         String responseCode = params.get("vnp_ResponseCode");
         String orderInfo = params.get("vnp_OrderInfo"); // đây là clerkUserId bạn gửi
         Map<String, String> rsp = new HashMap<>();

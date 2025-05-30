@@ -37,7 +37,7 @@ public class VnpayService {
 
         urlReturn += VnpayConfig.vnp_Returnurl;
         vnp_Params.put("vnp_ReturnUrl", urlReturn);
-        vnp_Params.put("vnp_IpnUrl", "https://duc-spring.ngodat0103.live/demo/IPN");
+       // vnp_Params.put("vnp_IpnUrl", "https://duc-spring.ngodat0103.live/demo/IPN");
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
@@ -54,6 +54,7 @@ public class VnpayService {
 
         List fieldNames = new ArrayList(vnp_Params.keySet());
         Collections.sort(fieldNames);
+
         StringBuilder hashData = new StringBuilder();
         StringBuilder query = new StringBuilder();
         Iterator itr = fieldNames.iterator();
