@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -54,6 +56,16 @@ public class UserController {
 
     }
 
+    @GetMapping("/userActive/{clerkUserId}")
+    public Map<String, Object> getUserActiveStatus(@PathVariable String clerkUserId) {
+        User user = userRepository.findByClerkUserId(clerkUserId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("active", user.isActive());
+
+        return response;
+    }
 }
 // Hanh trinh du lieu
 // Khi nguoi dung gui request POST/ users
