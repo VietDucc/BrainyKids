@@ -19,11 +19,6 @@ public class UserDeckController {
         this.userDeckService = userDeckService;
     }
 
-    @GetMapping("/{id}")
-    public UserDeck getUserDeckById(@PathVariable int id) {
-        return userDeckService.getUserDeckById(id);
-    }
-
     @GetMapping
     public List<UserDeckResponse> getUserDecks(@PathVariable String clerkUserId) {
         return userDeckService.getAllDecksByUserId(clerkUserId);
