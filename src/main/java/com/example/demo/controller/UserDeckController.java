@@ -35,8 +35,8 @@ public class UserDeckController {
     }
 
     @PutMapping
-    public UserDeck updateUserDeck(@PathVariable String clerkUserId, @RequestBody UserDeck userDeck) {
-        return userDeckService.updateDeck(clerkUserId, userDeck);
+    public UserDeck updateUserDeck(@PathVariable String clerkUserId, @RequestBody Long id, @RequestBody UserDeck userDeck) {
+        return userDeckService.updateDeck(clerkUserId, id, userDeck);
     }
 
     @DeleteMapping("/{id}")

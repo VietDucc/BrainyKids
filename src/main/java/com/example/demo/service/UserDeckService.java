@@ -33,6 +33,15 @@ public class UserDeckService {
             return userDeckRepository.save(existingDeck);
         }).orElseThrow(() -> new IllegalArgumentException("Deck not found with id: " + id));
     }
+    public UserDeck updateDeck(String clerkUserId, Long id, UserDeck updatedDeck) {
+        return userDeckRepository.findById(id).map(existingDeck -> {
+            if (!existingDeck.getClerkUserId().equals(clerkUserId)) {
+                throw new IllegalArgumentException("clerk user id does not match");
+            }
+            existingDeck.setName(updatedDeck.getName());
+            return userDeckRepository.save(existingDeck);
+        }).orElseThrow(() -> new IllegalArgumentException("Deck not found with id: " + id));
+    }
     public void deleteDeck(Long id) {
         userDeckRepository.deleteById(id);
     }
