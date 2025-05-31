@@ -5,7 +5,6 @@ import com.example.demo.entity.UserDeck;
 import com.example.demo.repository.UserDeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -33,19 +32,7 @@ public class UserDeckService {
             return userDeckRepository.save(existingDeck);
         }).orElseThrow(() -> new IllegalArgumentException("Deck not found with id: " + id));
     }
-    public UserDeck updateDeck(String clerkUserId, Long id, UserDeck updatedDeck) {
-        return userDeckRepository.findById(id).map(existingDeck -> {
-            if (!existingDeck.getClerkUserId().equals(clerkUserId)) {
-                throw new IllegalArgumentException("clerk user id does not match");
-            }
-            existingDeck.setName(updatedDeck.getName());
-            return userDeckRepository.save(existingDeck);
-        }).orElseThrow(() -> new IllegalArgumentException("Deck not found with id: " + id));
-    }
     public void deleteDeck(Long id) {
         userDeckRepository.deleteById(id);
-    }
-    public UserDeck getUserDeckById(@PathVariable int id) {
-        return userDeckRepository.findUserDeckById(id);
     }
 }
