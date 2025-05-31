@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface UserDeckRepository extends JpaRepository<UserDeck, Long> {
     List<UserDeck> findAllByClerkUserId(String clerkUserId);
     Optional<UserDeck> findByIdAndClerkUserId(Long id, String clerkUserId);
-    UserDeck findUserDeckById(int id);
+    UserDeck findUserDeckById(Long id);
 }

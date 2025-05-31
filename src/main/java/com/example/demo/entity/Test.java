@@ -17,10 +17,12 @@ import java.util.List;
 @AllArgsConstructor
 public class Test {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private String description;
+    private String voiceUrl;
 
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TestPart> parts = new ArrayList<>();

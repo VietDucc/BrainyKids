@@ -10,14 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final TestPartRepository testPartRepository;
-
-    public QuestionService(QuestionRepository questionRepository, TestPartRepository testPartRepository) {
-        this.questionRepository = questionRepository;
-        this.testPartRepository = testPartRepository;
-    }
 
     public QuestionResponse createQuestion(Long partId, QuestionRequest request) {
         TestPart part = testPartRepository.findById(partId).orElseThrow(() -> new RuntimeException("Part not found"));
@@ -25,16 +21,9 @@ public class QuestionService {
                 .type(request.getType())
                 .question(request.getQuestion())
                 .questionImg(request.getQuestionImg())
-                .choiceA(request.getChoiceA())
-                .choiceB(request.getChoiceB())
-                .choiceC(request.getChoiceC())
-                .choiceD(request.getChoiceD())
-                .choiceAImg(request.getChoiceAImg())
-                .choiceBImg(request.getChoiceBImg())
-                .choiceCImg(request.getChoiceCImg())
-                .choiceDImg(request.getChoiceDImg())
-                .correctAnswer(request.getCorrectAnswer())
                 .part(part)
+                .id(request.getId())
+                .answer(request.getAnswer())
                 .build();
         return mapToDto(questionRepository.save(question));
     }
@@ -44,16 +33,14 @@ public class QuestionService {
         question.setType(request.getType());
         question.setQuestion(request.getQuestion());
         question.setQuestionImg(request.getQuestionImg());
-        question.setChoiceA(request.getChoiceA());
-        question.setChoiceB(request.getChoiceB());
-        question.setChoiceC(request.getChoiceC());
-        question.setChoiceD(request.getChoiceD());
-        question.setChoiceAImg(request.getChoiceAImg());
-        question.setChoiceBImg(request.getChoiceBImg());
-        question.setChoiceCImg(request.getChoiceCImg());
-        question.setChoiceDImg(request.getChoiceDImg());
-        question.setCorrectAnswer(request.getCorrectAnswer());
+        question.setDescription(request.getDescription());
+        question.setQuestionOrder(question.getQuestionOrder());
         return mapToDto(questionRepository.save(question));
+    }
+
+    public QuestionResponse getQuestion(Long questionId) {
+        Question question = questionRepository.findById(questionId).orElseThrow(() -> new RuntimeException("Question not found"));
+        return mapToDto(question);
     }
 
     public void deleteQuestion(Long id) {
@@ -66,15 +53,9 @@ public class QuestionService {
                 .type(q.getType())
                 .question(q.getQuestion())
                 .questionImg(q.getQuestionImg())
-                .choiceA(q.getChoiceA())
-                .choiceB(q.getChoiceB())
-                .choiceC(q.getChoiceC())
-                .choiceD(q.getChoiceD())
-                .choiceAImg(q.getChoiceAImg())
-                .choiceBImg(q.getChoiceBImg())
-                .choiceCImg(q.getChoiceCImg())
-                .choiceDImg(q.getChoiceDImg())
-                .correctAnswer(q.getCorrectAnswer())
+                .description(q.getDescription())
+                .questionOrder(q.getQuestionOrder())
+                .answer(q.getAnswer())
                 .build();
     }
 }

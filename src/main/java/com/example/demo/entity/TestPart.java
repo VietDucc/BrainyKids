@@ -23,6 +23,10 @@ public class TestPart {
     @Enumerated(EnumType.STRING)
     private PartType type;
 
+    private String description;
+    private Long partOrder;
+    private Long partNumber;
+
     @ManyToOne
     @JoinColumn(name = "test_id")
     private Test test;

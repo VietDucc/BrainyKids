@@ -1,11 +1,9 @@
 package com.example.demo.entity;
 
 import com.example.demo.enums.QuestionType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Builder
@@ -23,22 +21,15 @@ public class Question {
 
     @Column(columnDefinition = "TEXT")
     private String question;
-
     private String questionImg;
 
-    private String choiceA;
-    private String choiceB;
-    private String choiceC;
-    private String choiceD;
-
-    private String choiceAImg;
-    private String choiceBImg;
-    private String choiceCImg;
-    private String choiceDImg;
-
-    private String correctAnswer;
+    private String description;
+    private Long questionOrder;
 
     @ManyToOne
     @JoinColumn(name = "part_id")
     private TestPart part;
+
+    @OneToOne(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Answer answer;
 }

@@ -1,13 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.QuestionRequest;
-import com.example.demo.dto.request.TestPartRequest;
-import com.example.demo.dto.request.TestRequest;
-import com.example.demo.dto.request.TestSubmissionRequest;
-import com.example.demo.dto.response.QuestionResponse;
-import com.example.demo.dto.response.TestPartResponse;
-import com.example.demo.dto.response.TestResponse;
-import com.example.demo.dto.response.TestSubmissionResponse;
+import com.example.demo.dto.request.*;
+import com.example.demo.dto.response.*;
+import com.example.demo.service.AnswerService;
 import com.example.demo.service.QuestionService;
 import com.example.demo.service.TestPartService;
 import com.example.demo.service.TestService;
@@ -24,6 +19,7 @@ public class TestController {
     private final TestService testService;
     private final TestPartService testPartService;
     private final QuestionService questionService;
+    private final AnswerService answerService;
 
     @PostMapping
     public ResponseEntity<TestResponse> createTest(@RequestBody TestRequest request) {
@@ -80,6 +76,22 @@ public class TestController {
     @DeleteMapping("/questions/{questionId}")
     public ResponseEntity<Void> deleteQuestion(@PathVariable Long questionId) {
         questionService.deleteQuestion(questionId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/questions/{questionId}/answers")
+    public ResponseEntity<AnswerResponse> createAnswer(@PathVariable Long questionId, @RequestBody AnswerRequest request) {
+        return ResponseEntity.ok(answerService.createAnswer(questionId, request));
+    }
+
+    @PutMapping("/answers/{answerId}")
+    public ResponseEntity<AnswerResponse> updateAnswer(@PathVariable Long answerId, @RequestBody AnswerRequest request) {
+        return ResponseEntity.ok(answerService.updateAnswer(answerId, request));
+    }
+
+    @DeleteMapping("/answers/{answerId}")
+    public ResponseEntity<Void> deleteAnswer(@PathVariable Long answerId) {
+        answerService.deleteAnswer(answerId);
         return ResponseEntity.noContent().build();
     }
 

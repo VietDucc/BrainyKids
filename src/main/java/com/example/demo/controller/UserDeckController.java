@@ -20,7 +20,7 @@ public class UserDeckController {
     }
 
     @GetMapping("/{id}")
-    public UserDeck getUserDeckById(@PathVariable int id) {
+    public UserDeck getUserDeckById(@PathVariable Long id) {
         return userDeckService.getUserDeckById(id);
     }
 
