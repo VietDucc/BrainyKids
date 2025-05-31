@@ -5,6 +5,7 @@ import com.example.demo.entity.UserDeck;
 import com.example.demo.repository.UserDeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -43,5 +44,8 @@ public class UserDeckService {
     }
     public void deleteDeck(Long id) {
         userDeckRepository.deleteById(id);
+    }
+    public UserDeck getUserDeckById(@PathVariable int id) {
+        return userDeckRepository.findUserDeckById(id);
     }
 }
