@@ -8,6 +8,7 @@ import com.example.demo.entity.Question;
 import com.example.demo.repository.AnswerRepository;
 import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.TestPartRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class AnswerService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
 
+    @Transactional
     public AnswerResponse createAnswer(Long questionId, AnswerRequest answerRequest) {
         Question question = questionRepository.findById(questionId).orElseThrow(() -> new RuntimeException("Question not found"));
         Answer answer = Answer.builder()
@@ -24,7 +26,7 @@ public class AnswerService {
                 .choiceA(answerRequest.getChoiceA())
                 .choiceB(answerRequest.getChoiceB())
                 .choiceC(answerRequest.getChoiceC())
-                .choiceD(answerRequest.getChoiceC())
+                .choiceD(answerRequest.getChoiceD())
                 .choiceAImg(answerRequest.getChoiceAImg())
                 .choiceBImg(answerRequest.getChoiceBImg())
                 .choiceCImg(answerRequest.getChoiceCImg())
@@ -37,7 +39,7 @@ public class AnswerService {
         question.setAnswer(savedAnswer);
         questionRepository.save(question);
 
-        return mapToDto(answerRepository.save(answer));
+        return mapToDto(savedAnswer);
     }
 
     public AnswerResponse getAnswer(Long answerId) {
@@ -45,6 +47,7 @@ public class AnswerService {
         return mapToDto(answer);
     }
 
+    @Transactional
     public AnswerResponse updateAnswer(Long answerId, AnswerRequest answerRequest) {
         Answer answer = answerRepository.findById(answerId).orElseThrow(() -> new RuntimeException("Answer not found"));
         answer.setChoiceA(answerRequest.getChoiceA());
@@ -77,5 +80,4 @@ public class AnswerService {
                 .correctAnswer(answer.getCorrectAnswer())
                 .build();
     }
-
 }

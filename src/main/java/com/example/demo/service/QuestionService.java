@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.request.QuestionRequest;
+import com.example.demo.dto.response.AnswerResponse;
 import com.example.demo.dto.response.QuestionResponse;
+import com.example.demo.entity.Answer;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.TestPart;
 import com.example.demo.repository.QuestionRepository;
@@ -55,7 +57,22 @@ public class QuestionService {
                 .questionImg(q.getQuestionImg())
                 .description(q.getDescription())
                 .questionOrder(q.getQuestionOrder())
-                .answer(q.getAnswer())
+                .answer(mapToDto(q.getAnswer()))
+                .build();
+    }
+
+    private AnswerResponse mapToDto(Answer answer) {
+        return AnswerResponse.builder()
+                .id(answer.getId())
+                .choiceA(answer.getChoiceA())
+                .choiceB(answer.getChoiceB())
+                .choiceC(answer.getChoiceC())
+                .choiceD(answer.getChoiceD())
+                .choiceAImg(answer.getChoiceAImg())
+                .choiceBImg(answer.getChoiceBImg())
+                .choiceCImg(answer.getChoiceCImg())
+                .choiceDImg(answer.getChoiceDImg())
+                .correctAnswer(answer.getCorrectAnswer())
                 .build();
     }
 }

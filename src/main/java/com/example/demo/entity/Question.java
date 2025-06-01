@@ -31,5 +31,6 @@ public class Question {
     private TestPart part;
 
     @OneToOne(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Answer answer;
 }

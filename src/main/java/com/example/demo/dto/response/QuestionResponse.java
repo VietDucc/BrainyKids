@@ -18,5 +18,5 @@ public class QuestionResponse {
     private String questionImg;
     private String description;
     private Long questionOrder;
-    private Answer answer;
+    private AnswerResponse answer;
 }

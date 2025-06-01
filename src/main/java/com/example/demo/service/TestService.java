@@ -1,8 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.request.*;
-import com.example.demo.dto.response.TestResponse;
-import com.example.demo.dto.response.TestSubmissionResponse;
+import com.example.demo.dto.response.*;
 import com.example.demo.entity.Answer;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Test;
@@ -11,6 +10,7 @@ import com.example.demo.repository.AnswerRepository;
 import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.TestPartRepository;
 import com.example.demo.repository.TestRepository;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import org.springframework.stereotype.Service;
 
@@ -79,6 +79,7 @@ public class TestService {
         return new TestSubmissionResponse(passed, correct, total, score);
     }
 
+    @Transactional
     public TestResponse createTest(TestRequest dto) {
         Test test = new Test();
         test.setName(dto.getName());
@@ -94,9 +95,17 @@ public class TestService {
                 List<Question> questions = new ArrayList<>();
                 if (partDto.getQuestions() != null) {
                     for (QuestionRequest q : partDto.getQuestions()) {
-                        Answer answer = null;
+                        Question question = Question.builder()
+                                .type(q.getType())
+                                .question(q.getQuestion())
+                                .questionImg(q.getQuestionImg())
+                                .description(q.getDescription())
+                                .questionOrder(q.getQuestionOrder())
+                                .part(part)
+                                .build();
+
                         if (q.getAnswer() != null) {
-                            answer = Answer.builder()
+                            Answer answer = Answer.builder()
                                     .choiceA(q.getAnswer().getChoiceA())
                                     .choiceB(q.getAnswer().getChoiceB())
                                     .choiceC(q.getAnswer().getChoiceC())
@@ -106,19 +115,12 @@ public class TestService {
                                     .choiceCImg(q.getAnswer().getChoiceCImg())
                                     .choiceDImg(q.getAnswer().getChoiceDImg())
                                     .correctAnswer(q.getAnswer().getCorrectAnswer())
+                                    .question(question)
                                     .build();
+
+                            question.setAnswer(answer);
                         }
 
-                        Question question = Question.builder()
-                                .id(q.getId())
-                                .type(q.getType())
-                                .question(q.getQuestion())
-                                .questionImg(q.getQuestionImg())
-                                .answer(q.getAnswer())
-                                .build();
-                        if (answer != null) {
-                            answer.setQuestion(question);
-                        }
                         questions.add(question);
                     }
                 }
@@ -127,8 +129,9 @@ public class TestService {
             }
         }
         test.setParts(parts);
-        testRepository.save(test);
-        return mapToDto(test);
+
+        Test savedTest = testRepository.save(test);
+        return mapToDto(savedTest);
     }
 
     public TestResponse getTest(Long id) {
@@ -147,17 +150,32 @@ public class TestService {
                 .description(test.getDescription())
                 .parts(
                         test.getParts().stream().map(part ->
-                                TestPartRequest.builder()
+                                TestPartResponse.builder()
                                         .id(part.getId())
                                         .type(part.getType())
                                         .questions(
-                                                part.getQuestions().stream().map(q -> QuestionRequest.builder()
-                                                                .id(q.getId())
-                                                                .type(q.getType())
-                                                                .question(q.getQuestion())
-                                                                .questionImg(q.getQuestionImg())
-                                                                .answer(q.getAnswer())
-                                                                .build())
+                                                part.getQuestions().stream().map(q ->
+                                                                QuestionResponse.builder()
+                                                                        .id(q.getId())
+                                                                        .type(q.getType())
+                                                                        .question(q.getQuestion())
+                                                                        .questionImg(q.getQuestionImg())
+                                                                        .description(q.getDescription())
+                                                                        .questionOrder(q.getQuestionOrder())
+                                                                        .answer(q.getAnswer() != null ?
+                                                                                AnswerResponse.builder()
+                                                                                        .id(q.getAnswer().getId())
+                                                                                        .choiceA(q.getAnswer().getChoiceA())
+                                                                                        .choiceB(q.getAnswer().getChoiceB())
+                                                                                        .choiceC(q.getAnswer().getChoiceC())
+                                                                                        .choiceD(q.getAnswer().getChoiceD())
+                                                                                        .choiceAImg(q.getAnswer().getChoiceAImg())
+                                                                                        .choiceBImg(q.getAnswer().getChoiceBImg())
+                                                                                        .choiceCImg(q.getAnswer().getChoiceCImg())
+                                                                                        .choiceDImg(q.getAnswer().getChoiceDImg())
+                                                                                        .correctAnswer(q.getAnswer().getCorrectAnswer())
+                                                                                        .build() : null)
+                                                                        .build())
                                                         .collect(Collectors.toList())
                                         )
                                         .build()

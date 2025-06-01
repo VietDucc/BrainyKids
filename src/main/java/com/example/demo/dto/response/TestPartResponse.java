@@ -17,5 +17,5 @@ import java.util.List;
 public class TestPartResponse {
     private Long id;
     private PartType type;
-    private List<QuestionRequest> questions;
+    private List<QuestionResponse> questions;
 }

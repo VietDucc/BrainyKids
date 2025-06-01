@@ -16,5 +16,5 @@ public class TestResponse {
     private Long id;
     private String name;
     private String description;
-    private List<TestPartRequest> parts;
+    private List<TestPartResponse> parts;
 }
