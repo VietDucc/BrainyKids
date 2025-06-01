@@ -20,9 +20,14 @@ public class AnswerService {
 
     @Transactional
     public AnswerResponse createAnswer(Long questionId, AnswerRequest answerRequest) {
-        Question question = questionRepository.findById(questionId).orElseThrow(() -> new RuntimeException("Question not found"));
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new RuntimeException("Question not found"));
+
+        if (question.getAnswer() != null) {
+            throw new RuntimeException("Question already has an answer");
+        }
+
         Answer answer = Answer.builder()
-                .id(answerRequest.getId())
                 .choiceA(answerRequest.getChoiceA())
                 .choiceB(answerRequest.getChoiceB())
                 .choiceC(answerRequest.getChoiceC())
@@ -32,15 +37,16 @@ public class AnswerService {
                 .choiceCImg(answerRequest.getChoiceCImg())
                 .choiceDImg(answerRequest.getChoiceDImg())
                 .correctAnswer(answerRequest.getCorrectAnswer())
+                .question(question)
                 .build();
 
-        Answer savedAnswer = answerRepository.save(answer);
+        question.setAnswer(answer);
 
-        question.setAnswer(savedAnswer);
-        questionRepository.save(question);
+        Question savedQuestion = questionRepository.save(question);
 
-        return mapToDto(savedAnswer);
+        return mapToDto(savedQuestion.getAnswer());
     }
+
 
     public AnswerResponse getAnswer(Long answerId) {
         Answer answer = answerRepository.findById(answerId).orElseThrow(() -> new RuntimeException("Answer not found"));
