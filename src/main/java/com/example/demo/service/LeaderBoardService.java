@@ -16,9 +16,9 @@ public class LeaderBoardService {
     private UserRepository userRepository;
 
     public List<UserScoreResponseDTO> getAllUserScores() {
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findTop10ByOrderByScoreDesc();
         return users.stream()
-                .map(user -> new UserScoreResponseDTO(user.getId(), user.getClerkUserId(), user.getFirstName() + " " + user.getLastName(), user.getScore()))
+                .map(user -> new UserScoreResponseDTO(user.getId(), user.getClerkUserId(), user.getFirstName() + " " + user.getLastName(), user.getScore(), user.getProfile_image_url()))
                 .collect(Collectors.toList());
     }
 }

@@ -10,4 +10,5 @@ public class UserScoreResponseDTO {
     private String clerkUserId;
     private String username;
     private int score;
+    private String profile_image_url;
 }
