@@ -18,7 +18,13 @@ public class LeaderBoardService {
     public List<UserScoreResponseDTO> getAllUserScores() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .map(user -> new UserScoreResponseDTO(user.getId(), user.getClerkUserId(), user.getFirstName() + " " + user.getLastName(), user.getScore()))
+                .map(user -> new UserScoreResponseDTO(
+                        user.getId(),
+                        user.getClerkUserId(),
+                        user.getFirstName() + " " + user.getLastName(),
+                        user.getProfile_image_url(),
+                        user.getScore()
+                        ))
                 .collect(Collectors.toList());
     }
 }

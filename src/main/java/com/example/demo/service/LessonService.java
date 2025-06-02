@@ -40,6 +40,7 @@ public class LessonService {
 
     @Autowired
     private ChallengeCacheService challengeCacheService;
+
     public List<Lesson> getLessonByUnitId(Long unitId) {
         return lessonRepository.findByUnit_Id(unitId);
     }
@@ -55,7 +56,7 @@ public class LessonService {
         return lessonRepository.save(lesson);
     }
 
-    @CacheEvict(value= "challengesByLesson", key="#lessnId")
+    @CacheEvict(value= "challengesByLesson", key="#lessonId")
     public Lesson updateLesson(Long lessonId, LessonRequest lessonRequest) {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new RuntimeException("Lesson not found"));

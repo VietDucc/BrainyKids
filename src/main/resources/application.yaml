@@ -56,4 +56,4 @@ vnpay:
   tmnCode: C8APZ1UO
   hashSecret: GONRPHP7A9ZAUFXZUOM809Z2O3938AYR
   payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-  returnUrl: http://localhost:8080/demo/return_url
+  returnUrl: https://brainykidslearn.id.vn/

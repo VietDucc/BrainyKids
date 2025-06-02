@@ -32,6 +32,9 @@ public class UserDeckService {
             return userDeckRepository.save(existingDeck);
         }).orElseThrow(() -> new IllegalArgumentException("Deck not found with id: " + id));
     }
+    public UserDeck getUserDeckById(Long id) {
+        return userDeckRepository.findUserDeckById(id);
+    }
     public void deleteDeck(Long id) {
         userDeckRepository.deleteById(id);
     }

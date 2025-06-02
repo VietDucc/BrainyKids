@@ -28,6 +28,10 @@ public class User {
     private boolean isNewUser ;
 
     @Column(nullable = false)
+    private boolean active = false;
+
+
+    @Column(nullable = false)
     private String role = "USER";
 
     public User(String clerkUserId, String firstName, String lastName, String email, String profile_image_url, int score) {
@@ -38,6 +42,7 @@ public class User {
         this.email = email;
         this.score = score;
         this.isNewUser = isNewUser;
+        this.active = false;
         this.role ="USER";
 
 
