@@ -1,24 +1,22 @@
 package com.example.demo.dto.request;
 
-import com.example.demo.entity.Answer;
-import com.example.demo.entity.TestPart;
 import com.example.demo.enums.QuestionType;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 @Builder
 public class QuestionRequest {
-    private Long id;
     private QuestionType type;
     private String question;
-    private String questionImg;
     private String description;
-    private Long questionOrder;
-    private TestPart part;
-    private Answer answer;
+    private String imgSrc;
+    private int questionOrder;
+    private long partId;
+    private List<QuestionOptionRequestDto> questionOptions = new ArrayList<>();
 }
