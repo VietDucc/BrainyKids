@@ -43,7 +43,6 @@ public class QuestionService {
     }
 
     public long createQuestion(QuestionRequest questionRequest) {
-        long questionId = questionRepository.findMaxId() + 1;
         Question question = Question.builder()
                 .type(questionRequest.getType())
                 .question(questionRequest.getQuestion())
@@ -52,7 +51,6 @@ public class QuestionService {
                 .questionOrder(questionRequest.getQuestionOrder())
                 .part(partRepository.findById(questionRequest.getPartId())
                         .orElseThrow(() -> new RuntimeException("Part not found")))
-                .id(questionId)
                 .build();
 
         question.setQuestionOptions(buildQuestionOptions(question, questionRequest));
@@ -115,7 +113,7 @@ public class QuestionService {
                     char label = (char) ('A' + j);
                     options.add(QuestionOptionRequestDto.builder()
                             .answers(answers.get(j))
-                            .correctPoint(String.valueOf(label).equalsIgnoreCase(correctAnswer))
+                            .correct(String.valueOf(label).equalsIgnoreCase(correctAnswer))
                             .imgSrc(null)
                             .audioSrc(null)
                             .deleteFlag(false)
@@ -171,7 +169,7 @@ public class QuestionService {
             QuestionOption questionOption = QuestionOption.builder()
                     .answers(option.getAnswers())
                     .audioSrc(option.getAudioSrc())
-                    .correct(option.isCorrectPoint())
+                    .correct(option.isCorrect())
                     .imgSrc(option.getImgSrc())
                     .question(question)
                     .build();

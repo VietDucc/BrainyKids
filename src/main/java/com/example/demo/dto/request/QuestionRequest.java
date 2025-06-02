@@ -1,9 +1,7 @@
 package com.example.demo.dto.request;
 
 import com.example.demo.enums.QuestionType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuestionRequest {
     private QuestionType type;
     private String question;

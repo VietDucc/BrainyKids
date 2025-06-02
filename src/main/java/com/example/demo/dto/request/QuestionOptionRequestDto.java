@@ -1,19 +1,15 @@
 package com.example.demo.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuestionOptionRequestDto {
     private String audioSrc;
-
-    @NotEmpty
-    private boolean correctPoint;
-
+    private boolean correct;
     private String imgSrc;
     private String answers;
     private boolean deleteFlag;
