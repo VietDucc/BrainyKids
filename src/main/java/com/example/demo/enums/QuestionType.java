@@ -5,14 +5,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Arrays;
 
 public enum QuestionType {
-    exam1, // 4 dap an chu
-    exam2, // 4 dap an chi co option, k co text, 1 anh tong
-    exam3, // 4 dap an anh
-    read1, // 4 dap an chu, 1 anh cau hoi
-    read2, // 4 dap an chu, 1 doan hoi thoai
-    read3, // 4 dap an anh, 1 cau hoi va anh
-    read4, // 4 dap an anh, 1 cau hoi va anh
-    read5; // 4 dap an chu hoac anh, 2 cau hoi
+    part1, // 1 anh, 4 cau tra loi
+    part2, // 1 cau hoi, 3 cau tra loi
+    part3, // 1 cau hoi, 4 text || 1 anh tong 1 cau hoi 4 cau tra loi
+    part5, // 1 cau hoi, 4 cau tra loi chu
+    part6; // 1 cau hoi, 1 anh, 4 cau tra loi
 
     @JsonCreator
     public static QuestionType fromString(String value) {

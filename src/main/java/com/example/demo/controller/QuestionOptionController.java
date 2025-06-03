@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/exam")
+@RequestMapping("/api/exam/options")
 public class QuestionOptionController {
 
     @Autowired
@@ -35,11 +35,12 @@ public class QuestionOptionController {
     }
 
     @PostMapping("/questions/{questionId}/options")
-    public ResponseEntity<QuestionOptionDTO> createQuestionOption(@PathVariable Long questionId, @RequestBody QuestionOptionRequest optionRequest) {
+    public ResponseEntity<Map<String, String>> createQuestionOption(@PathVariable Long questionId, @RequestBody QuestionOptionRequest optionRequest) {
         try {
-            QuestionOption option = questionOptionService.createQuestionOption(questionId, optionRequest);
-            QuestionOptionDTO optionDTO = convertToQuestionOptionDTO(option);
-            return ResponseEntity.status(HttpStatus.CREATED).body(optionDTO);
+            questionOptionService.createQuestionOption(questionId, optionRequest);
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {

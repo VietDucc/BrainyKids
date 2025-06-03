@@ -51,11 +51,12 @@ public class ExamController {
     }
 
     @PostMapping
-    public ResponseEntity<ExamDTO> createExam(@RequestBody ExamRequest examRequest) {
+    public ResponseEntity<Map<String, String>> createExam(@RequestBody ExamRequest examRequest) {
         try {
-            Exam exam = examService.createExam(examRequest);
-            ExamDTO examDTO = convertToExamDTO(exam);
-            return ResponseEntity.status(HttpStatus.CREATED).body(examDTO);
+            examService.createExam(examRequest);
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

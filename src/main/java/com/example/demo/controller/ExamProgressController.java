@@ -32,12 +32,14 @@ public class ExamProgressController {
     }
 
     @PostMapping("/progress/exam/{examId}")
-    public ResponseEntity<ExamProgress> createExamProgress(
+    public ResponseEntity<Map<String, String>> createExamProgress(
             @PathVariable Long examId,
             @RequestBody ExamProgressRequest progressRequest) {
         try {
-            ExamProgress progress = examProgressService.createExamProgress(progressRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(progress);
+            examProgressService.createExamProgress(progressRequest);
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
