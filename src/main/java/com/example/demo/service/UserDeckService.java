@@ -13,6 +13,11 @@ import java.util.List;
 public class UserDeckService {
     @Autowired private UserDeckRepository userDeckRepository;
 
+    public UserDeck getDeckByIdAndClerkUserId(Long id, String clerkUserId) {
+        return userDeckRepository.findByIdAndClerkUserId(id, clerkUserId)
+                .orElseThrow(() -> new RuntimeException("Deck not found or does not belong to user"));
+    }
+
     public UserDeckService(UserDeckRepository userDeckRepository) {
         this.userDeckRepository = userDeckRepository;
     }
@@ -39,11 +44,4 @@ public class UserDeckService {
     public void deleteDeck(Long id) {
         userDeckRepository.deleteById(id);
     }
-
-    public UserDeck getDeckByIdAndClerkUserId(Long id, String clerkUserId) {
-        return userDeckRepository.findByIdAndClerkUserId(id, clerkUserId)
-                .orElseThrow(() -> new RuntimeException("Deck not found or does not belong to user"));
-    }
-
-
 }
