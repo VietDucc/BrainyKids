@@ -1,12 +1,12 @@
 package com.example.demo.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ExamRequest {
     private String name;
     private String description;

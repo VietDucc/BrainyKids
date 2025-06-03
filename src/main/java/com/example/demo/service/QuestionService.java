@@ -43,7 +43,6 @@ public class QuestionService {
     }
 
     public long createQuestion(QuestionRequest questionRequest) {
-        long questionId = questionRepository.findMaxId() + 1;
         Question question = Question.builder()
                 .type(questionRequest.getType())
                 .question(questionRequest.getQuestion())
@@ -52,7 +51,6 @@ public class QuestionService {
                 .questionOrder(questionRequest.getQuestionOrder())
                 .part(partRepository.findById(questionRequest.getPartId())
                         .orElseThrow(() -> new RuntimeException("Part not found")))
-                .id(questionId)
                 .build();
 
         question.setQuestionOptions(buildQuestionOptions(question, questionRequest));
@@ -115,7 +113,7 @@ public class QuestionService {
                     char label = (char) ('A' + j);
                     options.add(QuestionOptionRequestDto.builder()
                             .answers(answers.get(j))
-                            .correctPoint(String.valueOf(label).equalsIgnoreCase(correctAnswer))
+                            .correct(String.valueOf(label).equalsIgnoreCase(correctAnswer))
                             .imgSrc(null)
                             .audioSrc(null)
                             .deleteFlag(false)
@@ -135,13 +133,11 @@ public class QuestionService {
 
     private QuestionType mapToQuestionType(String text) {
         switch (text.trim().toLowerCase()) {
-            case "exam1": return QuestionType.exam1;
-            case "exam2": return QuestionType.exam2;
-            case "exam3": return QuestionType.exam3;
-            case "read1": return QuestionType.read1;
-            case "read2": return QuestionType.read2;
-            case "read3": return QuestionType.read3;
-            case "read4": return QuestionType.read4;
+            case "part1": return QuestionType.part1;
+            case "part2": return QuestionType.part2;
+            case "part3": return QuestionType.part3;
+            case "part5": return QuestionType.part5;
+            case "part6": return QuestionType.part6;
             default: throw new IllegalArgumentException("Unknown question type: " + text);
         }
     }
@@ -171,7 +167,7 @@ public class QuestionService {
             QuestionOption questionOption = QuestionOption.builder()
                     .answers(option.getAnswers())
                     .audioSrc(option.getAudioSrc())
-                    .correct(option.isCorrectPoint())
+                    .correct(option.isCorrect())
                     .imgSrc(option.getImgSrc())
                     .question(question)
                     .build();

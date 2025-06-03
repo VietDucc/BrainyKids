@@ -20,7 +20,11 @@ public class CaffeineConfig {
 
     @Bean
     public CacheManager cacheManager(Caffeine<Object, Object> caffeine){
-        CaffeineCacheManager manager = new CaffeineCacheManager("challengeByLesson", "unitsByCourse");
+        CaffeineCacheManager manager = new CaffeineCacheManager(
+                "challengeByLesson",
+                "unitsByCourse",
+                "questionByPart"
+        );
         manager.setCaffeine(caffeine);
         return manager;
     }

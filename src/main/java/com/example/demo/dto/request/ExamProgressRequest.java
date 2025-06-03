@@ -7,7 +7,11 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionProgressRequest {
+public class ExamProgressRequest {
     private String userId;
+    private Long examId;
+    private Integer completedQuestions;
+    private Integer totalQuestions;
+    private Double score;
     private boolean completed;
 }

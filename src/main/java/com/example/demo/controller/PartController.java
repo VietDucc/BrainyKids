@@ -15,59 +15,49 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/exam")
-public class ExamController {
+@RequestMapping("/api/exam/parts")
+public class PartController {
 
     @Autowired
-    private ExamService examService;
+    private PartService partService;
 
     @Autowired
-    private ExamProgressService examProgressService;
+    private QuestionCacheService questionCacheService;
 
-    @GetMapping
-    public ResponseEntity<List<ExamDTO>> getAllExams() {
-        try {
-            List<Exam> exams = examService.getAllExams();
-            List<ExamDTO> examDTOs = exams.stream()
-                    .map(this::convertToExamDTO)
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(examDTOs);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 
     @GetMapping("/{examId}")
-    public ResponseEntity<ExamDTO> getExamById(@PathVariable Long examId) {
+    public ResponseEntity<List<PartDTO>> getPartsByExamId(@PathVariable Long examId) {
         try {
-            Exam exam = examService.getExamById(examId);
-            ExamDTO examDTO = convertToExamDTO(exam);
-            return ResponseEntity.ok(examDTO);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            List<Part> parts = partService.getPartsByExamId(examId);
+            List<PartDTO> partDTOs = parts.stream()
+                    .map(this::convertToPartDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(partDTOs);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> createExam(@RequestBody ExamRequest examRequest) {
+    public ResponseEntity<Map<String, String>> createPart(@RequestBody PartRequest partRequest) {
         try {
-            examService.createExam(examRequest);
+            partService.createPart(partRequest);
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
             return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @PutMapping("/{examId}")
-    public ResponseEntity<ExamDTO> updateExam(@PathVariable Long examId, @RequestBody ExamRequest examRequest) {
+    @PutMapping("/{partId}")
+    public ResponseEntity<PartDTO> updatePart(@PathVariable Long partId, @RequestBody PartRequest partRequest) {
         try {
-            Exam exam = examService.updateExam(examId, examRequest);
-            ExamDTO examDTO = convertToExamDTO(exam);
-            return ResponseEntity.ok(examDTO);
+            Part part = partService.updatePart(partId, partRequest);
+            PartDTO partDTO = convertToPartDTO(part);
+            return ResponseEntity.ok(partDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
@@ -75,12 +65,12 @@ public class ExamController {
         }
     }
 
-    @DeleteMapping("/{examId}")
-    public ResponseEntity<Map<String, String>> deleteExam(@PathVariable Long examId) {
+    @DeleteMapping("/{partId}")
+    public ResponseEntity<Map<String, String>> deletePart(@PathVariable Long partId) {
         try {
-            examService.deleteExam(examId);
+            partService.deletePart(partId);
             Map<String, String> response = new HashMap<>();
-            response.put("message", "Exam deleted successfully");
+            response.put("message", "Part deleted successfully");
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -89,18 +79,17 @@ public class ExamController {
         }
     }
 
-    private ExamDTO convertToExamDTO(Exam exam) {
-        List<PartDTO> partDTOs = exam.getParts().stream()
-                .map(this::convertToPartDTO)
-                .collect(Collectors.toList());
-
-        return ExamDTO.builder()
-                .id(exam.getId())
-                .name(exam.getName())
-                .description(exam.getDescription())
-                .voice(exam.getVoice())
-                .parts(partDTOs)
-                .build();
+    @GetMapping("/{partId}/questions")
+    public ResponseEntity<List<QuestionDTO>> getQuestionsByPartId(@PathVariable Long partId) {
+        try {
+            List<Question> questions = questionCacheService.getQuestionsByPartId(partId);
+            List<QuestionDTO> questionDTOs = questions.stream()
+                    .map(this::convertToQuestionDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(questionDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     private PartDTO convertToPartDTO(Part part) {

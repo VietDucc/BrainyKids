@@ -1,13 +1,13 @@
 package com.example.demo.dto.request;
 
 import com.example.demo.enums.PartType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PartRequest {
     private String description;
     private int partOrder;
