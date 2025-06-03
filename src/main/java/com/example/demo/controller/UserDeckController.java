@@ -20,10 +20,9 @@ public class UserDeckController {
     }
 
     @GetMapping("/{id}")
-    public UserDeck getUserDeckById(@PathVariable Long id) {
-        return userDeckService.getUserDeckById(id);
+    public UserDeck getUserDeckById(@PathVariable String clerkUserId, @PathVariable Long id) {
+        return userDeckService.getDeckByIdAndClerkUserId(id, clerkUserId);
     }
-
     @GetMapping
     public List<UserDeckResponse> getUserDecks(@PathVariable String clerkUserId) {
         return userDeckService.getAllDecksByUserId(clerkUserId);
@@ -43,10 +42,4 @@ public class UserDeckController {
     public void deleteUserDeck(@PathVariable Long id) {
         userDeckService.deleteDeck(id);
     }
-
-    @GetMapping("/{id}")
-    public UserDeck getUserDeckById(@PathVariable String clerkUserId, @PathVariable Long id) {
-        return userDeckService.getDeckByIdAndClerkUserId(id, clerkUserId);
-    }
-
 }
