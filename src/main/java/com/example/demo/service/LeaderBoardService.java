@@ -26,6 +26,5 @@ public class LeaderBoardService {
                         user.getScore()
                 ))
                 .collect(Collectors.toList());
-                .collect(Collectors.toList());
     }
 }
