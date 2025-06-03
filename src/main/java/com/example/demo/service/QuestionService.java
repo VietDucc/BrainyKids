@@ -160,7 +160,6 @@ public class QuestionService {
                         ". Only part1, part2, part3, part5, part6 are allowed.");
         }
     }
-
     public long updateQuestion(Long questionId, QuestionRequest questionRequest) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("Question not found"));
