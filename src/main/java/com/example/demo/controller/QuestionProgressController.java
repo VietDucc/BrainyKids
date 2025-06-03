@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/exam")
+@RequestMapping("/api/exam/question/progress")
 public class QuestionProgressController {
 
     @Autowired
@@ -45,10 +45,12 @@ public class QuestionProgressController {
     }
 
     @PostMapping("/progress/question/{questionId}")
-    public ResponseEntity<QuestionProgress> createQuestionProgress(@PathVariable Long questionId, @RequestBody QuestionProgressRequest progressRequest) {
+    public ResponseEntity<Map<String, String>> createQuestionProgress(@PathVariable Long questionId, @RequestBody QuestionProgressRequest progressRequest) {
         try {
-            QuestionProgress progress = questionProgressService.createQuestionProgress(questionId, progressRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(progress);
+            questionProgressService.createQuestionProgress(questionId, progressRequest);
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -114,7 +116,7 @@ public class QuestionProgressController {
         try {
             questionCacheService.refreshQuestionsByPartId(partId);
             Map<String, String> response = new HashMap<>();
-            response.put("message", "Cache refreshed successfully for part " + partId);
+            response.put("status", "success");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

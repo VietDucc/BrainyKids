@@ -133,13 +133,11 @@ public class QuestionService {
 
     private QuestionType mapToQuestionType(String text) {
         switch (text.trim().toLowerCase()) {
-            case "exam1": return QuestionType.exam1;
-            case "exam2": return QuestionType.exam2;
-            case "exam3": return QuestionType.exam3;
-            case "read1": return QuestionType.read1;
-            case "read2": return QuestionType.read2;
-            case "read3": return QuestionType.read3;
-            case "read4": return QuestionType.read4;
+            case "part1": return QuestionType.part1;
+            case "part2": return QuestionType.part2;
+            case "part3": return QuestionType.part3;
+            case "part5": return QuestionType.part5;
+            case "part6": return QuestionType.part6;
             default: throw new IllegalArgumentException("Unknown question type: " + text);
         }
     }

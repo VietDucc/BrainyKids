@@ -39,11 +39,12 @@ public class PartController {
     }
 
     @PostMapping
-    public ResponseEntity<PartDTO> createPart(@RequestBody PartRequest partRequest) {
+    public ResponseEntity<Map<String, String>> createPart(@RequestBody PartRequest partRequest) {
         try {
-            Part part = partService.createPart(partRequest);
-            PartDTO partDTO = convertToPartDTO(part);
-            return ResponseEntity.status(HttpStatus.CREATED).body(partDTO);
+            partService.createPart(partRequest);
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {

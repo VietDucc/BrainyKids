@@ -42,16 +42,16 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Long>> createQuestion(@RequestBody QuestionRequest questionRequest) {
+    public ResponseEntity<Map<String, String>> createQuestion(@RequestBody QuestionRequest questionRequest) {
         try {
             System.out.println("Received question request: " + questionRequest);
             System.out.println("Question type: " + questionRequest.getType());
             System.out.println("Question options: " + questionRequest.getQuestionOptions());
 
-            long questionId = questionService.createQuestion(questionRequest);
-            Map<String, Long> response = new HashMap<>();
-            response.put("questionId", questionId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            questionService.createQuestion(questionRequest);
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             System.out.println("RuntimeException in createQuestion: " + e.getMessage());
             e.printStackTrace();
