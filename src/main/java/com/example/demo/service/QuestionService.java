@@ -70,44 +70,46 @@ public class QuestionService {
                 Row row = sheet.getRow(i);
                 if (row == null) continue;
 
-                long partId = (long) row.getCell(0).getNumericCellValue();
+                // Cột 0: partId
+                Cell partIdCell = row.getCell(0);
+                if (partIdCell == null || partIdCell.getCellType() != CellType.NUMERIC) continue;
+                long partId = (long) partIdCell.getNumericCellValue();
                 updatedPartIds.add(partId);
-                String typeStr = row.getCell(1).getStringCellValue();
-                String question = row.getCell(2).getStringCellValue();
-                String description = row.getCell(3).getStringCellValue();
 
+                // Cột 1: type
+                String typeStr = getCellString(row.getCell(1));
+                QuestionType type = mapToQuestionType(typeStr); // chỉ cho part1,2,3,5,6
+
+                // Cột 2: question
+                String question = getCellString(row.getCell(2));
+                // Cột 3: description
+                String description = getCellString(row.getCell(3));
+
+                // Cột 4-7: các phương án trả lời
                 List<String> answers = new ArrayList<>();
                 for (int col = 4; col <= 7; col++) {
-                    Cell cell = row.getCell(col);
-                    if (cell != null) {
-                        String answer = null;
-                        if (cell.getCellType() == CellType.STRING) {
-                            answer = cell.getStringCellValue();
-                        } else if (cell.getCellType() == CellType.NUMERIC) {
-                            answer = String.valueOf(cell.getNumericCellValue());
-                        }
-                        if (answer != null && !answer.trim().isEmpty()) {
-                            answers.add(answer.trim());
-                        }
+                    String answer = getCellString(row.getCell(col));
+                    if (answer != null && !answer.isEmpty()) {
+                        answers.add(answer.trim());
                     }
                 }
 
-                String correctAnswer = "";
-                Cell correctCell = row.getCell(8);
-                if (correctCell != null && correctCell.getCellType() == CellType.STRING) {
-                    correctAnswer = correctCell.getStringCellValue().trim();
-                }
+                // Cột 8: đáp án đúng (A, B, C, D)
+                String correctAnswer = getCellString(row.getCell(8));
 
-                String image = row.getCell(9) != null ? row.getCell(9).getStringCellValue() : null;
+                // Cột 9: ảnh
+                String image = getCellString(row.getCell(9));
 
+                // Tạo builder cho câu hỏi
                 QuestionRequest.QuestionRequestBuilder builder = QuestionRequest.builder()
                         .partId(partId)
                         .question(question)
                         .description(description)
                         .imgSrc(image)
-                        .type(mapToQuestionType(typeStr))
+                        .type(type)
                         .questionOrder(i - 1);
 
+                // Tạo danh sách phương án
                 List<QuestionOptionRequestDto> options = new ArrayList<>();
                 for (int j = 0; j < answers.size(); j++) {
                     char label = (char) ('A' + j);
@@ -131,16 +133,34 @@ public class QuestionService {
         }
     }
 
+    // Hỗ trợ đọc String từ ô bất kỳ
+    private String getCellString(Cell cell) {
+        if (cell == null) return null;
+        return switch (cell.getCellType()) {
+            case STRING -> cell.getStringCellValue();
+            case NUMERIC -> String.valueOf(cell.getNumericCellValue());
+            case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
+            case FORMULA -> cell.getCellFormula();
+            default -> null;
+        };
+    }
+
+    // Chỉ chấp nhận các loại part hợp lệ: 1, 2, 3, 5, 6
     private QuestionType mapToQuestionType(String text) {
+        if (text == null) throw new IllegalArgumentException("Question type cannot be null");
+
         switch (text.trim().toLowerCase()) {
             case "part1": return QuestionType.part1;
             case "part2": return QuestionType.part2;
             case "part3": return QuestionType.part3;
             case "part5": return QuestionType.part5;
             case "part6": return QuestionType.part6;
-            default: throw new IllegalArgumentException("Unknown question type: " + text);
+            default:
+                throw new IllegalArgumentException("Unsupported question type: " + text +
+                        ". Only part1, part2, part3, part5, part6 are allowed.");
         }
     }
+
 
     public long updateQuestion(Long questionId, QuestionRequest questionRequest) {
         Question question = questionRepository.findById(questionId)
