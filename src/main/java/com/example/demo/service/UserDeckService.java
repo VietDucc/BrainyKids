@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.response.UserDeckResponse;
+import com.example.demo.entity.Deck;
 import com.example.demo.entity.UserDeck;
 import com.example.demo.repository.UserDeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,11 @@ public class UserDeckService {
     public void deleteDeck(Long id) {
         userDeckRepository.deleteById(id);
     }
+
+    public UserDeck getDeckByIdAndClerkUserId(Long id, String clerkUserId) {
+        return userDeckRepository.findByIdAndClerkUserId(id, clerkUserId)
+                .orElseThrow(() -> new RuntimeException("Deck not found or does not belong to user"));
+    }
+
+
 }
