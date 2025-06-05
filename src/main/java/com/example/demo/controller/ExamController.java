@@ -25,11 +25,11 @@ public class ExamController {
     private ExamProgressService examProgressService;
 
     @GetMapping
-    public ResponseEntity<List<ExamDTO>> getAllExams() {
+    public ResponseEntity<List<ExamSimpleDTO>> getAllExams() {
         try {
             List<Exam> exams = examService.getAllExams();
-            List<ExamDTO> examDTOs = exams.stream()
-                    .map(this::convertToExamDTO)
+            List<ExamSimpleDTO> examDTOs = exams.stream()
+                    .map(this::convertToExamSimpleDTO)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(examDTOs);
         } catch (Exception e) {
@@ -141,6 +141,15 @@ public class ExamController {
                 .correct(option.isCorrect())
                 .imgSrc(option.getImgSrc())
                 .audioSrc(option.getAudioSrc())
+                .build();
+    }
+
+    private ExamSimpleDTO convertToExamSimpleDTO(Exam exam) {
+        return ExamSimpleDTO.builder()
+                .id(exam.getId())
+                .name(exam.getName())
+                .description(exam.getDescription())
+                .voice(exam.getVoice())
                 .build();
     }
 }
