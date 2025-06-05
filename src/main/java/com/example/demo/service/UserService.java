@@ -14,8 +14,10 @@ public class UserService {
     public User createUser(UserRequest userRequest) {
         User user = new User();
         user.setClerkUserId(userRequest.getData().getId());
-        user.setFirstName(userRequest.getData().getFirst_name());
-        user.setLastName(userRequest.getData().getLast_name());
+        String firstName = userRequest.getData().getFirst_name();
+        user.setFirstName(firstName != null ? firstName : "");
+        String lastName = userRequest.getData().getLast_name();
+        user.setLastName(lastName != null ? lastName : "");
         user.setProfile_image_url(userRequest.getData().getProfile_image_url());
         user.setScore(0);
         user.setNewUser(true);
