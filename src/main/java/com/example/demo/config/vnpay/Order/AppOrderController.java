@@ -29,7 +29,7 @@ public class AppOrderController {
         order = appOrderRepository.save(order);
 
         // Tạo URL thanh toán
-        String baseUrl = "https://duc-spring.ngodat0103.live/demo";
+        String baseUrl = "https://duc-spring.ngodat0103.live/demo/pay";
         String paymentUrl = vnpayAppService.createOrder(amount, orderInfo, baseUrl, txnRef);
 
         Map<String, String> rsp = new HashMap<>();

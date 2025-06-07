@@ -13,7 +13,7 @@ public class VnpayAppReturnController {
     @Autowired
     private AppOrderRepository appOrderRepository;
 
-    @GetMapping("/vnpay-payment-app")
+    @GetMapping("/pay/vnpay-payment-app")
     public String handleVnpayReturn(HttpServletRequest request, Model model) {
         String vnpTxnRef = request.getParameter("vnp_TxnRef");
         String responseCode = request.getParameter("vnp_ResponseCode");

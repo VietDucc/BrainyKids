@@ -38,9 +38,10 @@ public class SecurityConfig {
                         .requestMatchers("/IPN").permitAll()
 
                         .requestMatchers("/vnpay-payment-app", "/vnpay-payment-app/**").permitAll()
-                        .requestMatchers( "/api/app/ipn").permitAll()
-                        .requestMatchers(  "/api/app/order").permitAll()
-                        .requestMatchers(  "/api/app/order/*").permitAll()
+                        .requestMatchers("/pay/**").permitAll()
+                        .requestMatchers("/api/app/order").permitAll()
+                        .requestMatchers("/api/app/order/*").permitAll()
+
 
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

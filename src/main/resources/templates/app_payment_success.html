@@ -2,16 +2,214 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Thanh toán thành công</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán thành công - UITPay</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
-        .success { color: green; font-size: 1.5rem; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: bounce 0.6s ease-out;
+        }
+
+        .success-icon::after {
+            content: '✓';
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        @keyframes bounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .success-title {
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .success-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .payment-details {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            color: #6c757d;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .success-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        .celebration {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #4CAF50;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        .confetti:nth-child(1) { left: 10%; animation-delay: 0s; background: #4CAF50; }
+        .confetti:nth-child(2) { left: 20%; animation-delay: 0.5s; background: #2196F3; }
+        .confetti:nth-child(3) { left: 30%; animation-delay: 1s; background: #FF9800; }
+        .confetti:nth-child(4) { left: 40%; animation-delay: 1.5s; background: #E91E63; }
+        .confetti:nth-child(5) { left: 50%; animation-delay: 2s; background: #9C27B0; }
+        .confetti:nth-child(6) { left: 60%; animation-delay: 0.3s; background: #00BCD4; }
+        .confetti:nth-child(7) { left: 70%; animation-delay: 0.8s; background: #8BC34A; }
+        .confetti:nth-child(8) { left: 80%; animation-delay: 1.3s; background: #FFC107; }
+        .confetti:nth-child(9) { left: 90%; animation-delay: 1.8s; background: #FF5722; }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
-<div class="success">🎉 Thanh toán thành công!</div>
-<p>Mã giao dịch: <b th:text="${orderId}"></b></p>
-<p>Số tiền: <b th:text="${amount}"></b></p>
-<p>Thời gian thanh toán: <b th:text="${paymentTime}"></b></p>
+<div class="container">
+    <div class="celebration">
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+    </div>
+
+    <div class="success-icon"></div>
+
+    <h1 class="success-title">Thanh toán thành công!</h1>
+    <p class="success-subtitle">Giao dịch của bạn đã được xử lý thành công</p>
+
+    <div class="payment-details">
+        <div class="detail-row">
+            <span class="detail-label">Mã giao dịch:</span>
+            <span class="detail-value" th:text="${orderId}">TXN123456789</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Số tiền:</span>
+            <span class="detail-value" th:text="${amount}">500,000 VNĐ</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Thời gian thanh toán:</span>
+            <span class="detail-value" th:text="${paymentTime}">15:30 - 07/06/2025</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="logo">UITPay</div>
+        <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
+        <p>Nếu có thắc mắc, vui lòng liên hệ: support@uitpay.com</p>
+    </div>
+</div>
 </body>
 </html>
