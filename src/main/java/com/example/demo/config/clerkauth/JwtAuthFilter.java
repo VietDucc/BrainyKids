@@ -37,6 +37,32 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        /// ///
+        String path = request.getServletPath();
+
+        // Danh sách các đường dẫn public không cần check JWT
+        List<String> excludedPaths = List.of(
+                "/swagger-ui/",
+                "/v3/api-docs/",
+                "/users/clerk",
+                "/IPN",
+                "/vnpay-payment-app",
+                "/api/app/ipn",
+                "/api/app/order",
+                "/demo/vnpay-payment-app",
+                "/demo/api/app/ipn",
+                "/demo/api/app/order"
+        );
+
+        // Nếu request path bắt đầu với bất kỳ đường dẫn nào trong danh sách thì bỏ qua filter
+        boolean isExcluded = excludedPaths.stream().anyMatch(path::startsWith);
+        if (isExcluded) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
+        /// ///////
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);

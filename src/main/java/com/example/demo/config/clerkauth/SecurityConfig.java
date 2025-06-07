@@ -41,11 +41,6 @@ public class SecurityConfig {
                         .requestMatchers( "/api/app/ipn").permitAll()
                         .requestMatchers(  "/api/app/order").permitAll()
                         .requestMatchers(  "/api/app/order/*").permitAll()
-                        // BỔ SUNG THÊM CÁC DÒNG SAU:
-                        .requestMatchers("/demo/vnpay-payment-app", "/demo/vnpay-payment-app/**").permitAll()
-                        .requestMatchers("/demo/api/app/ipn").permitAll()
-                        .requestMatchers("/demo/api/app/order").permitAll()
-                        .requestMatchers("/demo/api/app/order/*").permitAll()
 
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
