@@ -36,6 +36,17 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/users/clerk").permitAll()
                         .requestMatchers("/IPN").permitAll()
+
+                        .requestMatchers("/vnpay-payment-app", "/vnpay-payment-app/**").permitAll()
+                        .requestMatchers( "/api/app/ipn").permitAll()
+                        .requestMatchers(  "/api/app/order").permitAll()
+                        .requestMatchers(  "/api/app/order/*").permitAll()
+                        // BỔ SUNG THÊM CÁC DÒNG SAU:
+                        .requestMatchers("/demo/vnpay-payment-app", "/demo/vnpay-payment-app/**").permitAll()
+                        .requestMatchers("/demo/api/app/ipn").permitAll()
+                        .requestMatchers("/demo/api/app/order").permitAll()
+                        .requestMatchers("/demo/api/app/order/*").permitAll()
+
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

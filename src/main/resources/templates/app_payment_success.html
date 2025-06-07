@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanh toán thành công</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
+        .success { color: green; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+<div class="success">🎉 Thanh toán thành công!</div>
+<p>Mã giao dịch: <b th:text="${orderId}"></b></p>
+<p>Số tiền: <b th:text="${amount}"></b></p>
+<p>Thời gian thanh toán: <b th:text="${paymentTime}"></b></p>
+</body>
+</html>
