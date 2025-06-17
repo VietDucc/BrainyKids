@@ -64,7 +64,10 @@ All HTTP traffic is secured via HTTPS
 
 👥 Project Team & Responsibilities
 - Team size: 4 members
-
+  + Duong Viet Duc - MSSV: 21521959
+  + Do Quang Huy - MSSV: 215221339
+  + Dong Nguyen Huu Khoa - MSSV: 23520734
+  + Le Trung Kien - MSSV: 21520308
 - Duration: 3 months
 
 ## 🔗 Related Links
