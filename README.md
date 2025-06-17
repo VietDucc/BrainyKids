@@ -19,18 +19,22 @@ Welcome to the backend of **Brainy-Kids**, an interactive web platform designed 
 
 - Swagger UI: [https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html](https://vietducc.id.vn/demo/swagger-ui/index.html#)
 
-## 🛠️ Tech Stack
+## CICD Architecture Diagram
+![image](https://github.com/user-attachments/assets/cabd97dc-9461-4743-9b1a-a34705bb57ea)
+
+## 🛠️ Tech
 
 - **Language**: Java 17
 - **Framework**: Spring Boot
 - **Authentication**: Clerk (frontend), JWT (backend)
 - **Database**: PostgreSQL
-- **Cache**: Redis
+- **Cache**: Redis, Caffeine
 - **API Documentation**: Swagger (OpenAPI), Postman
 - **Deployment**: Docker, Docker Compose
 - **CI/CD**: GitHub Actions
 - **Security Tools**: Trivy, Snyk, Arachni
 - **Operating System**: Ubuntu Server
+- **Testing**" JUnit5, RestAsured
 
 ## 🔐 Authentication & Authorization
 
@@ -63,24 +67,8 @@ All HTTP traffic is secured via HTTPS
 
 - Duration: 3 months
 
-Your responsibilities:
-
--   Designed and implemented core REST APIs using Spring Boot
-
-- Integrated Clerk for authentication and configured JWT validation
-
-- Maintained documentation using Swagger
-
-- Optimized backend performance with Redis caching
-
-- Set up CI/CD with GitHub Actions for automated deployment
-
-- Performed security testing using Trivy, Snyk, and Arachni
-
-- Assisted team coordination, progress tracking, and task delivery
-
 ## 🔗 Related Links
-🌐 Web App: https://brainy-kids-frontend.vercel.app
+🌐 Web App: [https://brainy-kids-frontend.vercel.app](https://brainykidslearn.id.vn/)
 
 🛠️ Admin Panel: https://brainy-kids-frontend.vercel.app/admin
 
