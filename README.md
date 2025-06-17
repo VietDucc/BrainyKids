@@ -17,7 +17,7 @@ Welcome to the backend of **Brainy-Kids**, an interactive web platform designed 
 
 ## 📚 API Documentation
 
-- Swagger UI: [https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html](https://vietducc.id.vn/demo/swagger-ui/index.html#)
+- Swagger UI: https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html#
 
 ## CICD Architecture Diagram
 ![image](https://github.com/user-attachments/assets/cabd97dc-9461-4743-9b1a-a34705bb57ea)
@@ -68,9 +68,9 @@ All HTTP traffic is secured via HTTPS
 - Duration: 3 months
 
 ## 🔗 Related Links
-🌐 Web App: [https://brainy-kids-frontend.vercel.app](https://brainykidslearn.id.vn/)
+🌐 Web App: https://brainykidslearn.id.vn
 
-🛠️ Admin Panel: https://brainy-kids-frontend.vercel.app/admin
+🛠️ Admin Panel: https://brainykidslearn.id.vn/vi/admin
 
 💻 Frontend Repository: https://github.com/VietDucc/brainy-kids-frontend
 
