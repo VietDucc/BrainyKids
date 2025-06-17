@@ -28,18 +28,8 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
 
-      # Step 2: Trivy Security Scan
-      - name: 🔍 Run Trivy to check for vulnerabilities
-        run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-          chmod +x ./bin/trivy
-          export PATH=$PATH:$PWD/bin
-          echo "Trivy version:"
-          ./bin/trivy --version
-          trivy image ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
-        continue-on-error: true
-
-      # Step 3: Arachni Scan with longle2003/arachni:v1.4-0.5.10
+    
+      # Step 2: Arachni Scan with longle2003/arachni:v1.4-0.5.10
       - name: 🔍 Run Arachni Scan + Export HTML Report
         run: |
           mkdir -p /tmp/arachni-reports
@@ -102,7 +92,18 @@ jobs:
       - name: 🏗️ Build Docker Image
         run: |
           docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/my-backend:latest .
-
+          
+      # Step 3: Trivy Security Scan
+      - name: 🔍 Run Trivy to check for vulnerabilities
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+          chmod +x ./bin/trivy
+          export PATH=$PATH:$PWD/bin
+          echo "Trivy version:"
+          ./bin/trivy --version
+          trivy image ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+        continue-on-error: true
+        
       - name: 📤 Push Docker Image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
