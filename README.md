@@ -21,7 +21,34 @@ Welcome to the backend of **Brainy-Kids**, an interactive web platform designed 
 
 ## CICD Architecture Diagram
 ![image](https://github.com/user-attachments/assets/cabd97dc-9461-4743-9b1a-a34705bb57ea)
+- Workflow uses Github Actions, triggered when a pussh is made to the Dev branch.
+- The goal to automate: testing - security scanning - building - deploying the backend to the server
+🧱 Prepare the environment
+- checkout: Download the source code from the repository.
+- Log in to Docker Hub to build and push the image.
 
+🛡️ Scan the backend image security
+- Snyk Scan: Scan the Docker image my-backend:latest for vulnerabilities.
+- Trivy Scan: After building a new image, continue scanning with Trivy.
+
+🔍 Scan the web interface security
+Arachni Scan:
+- Run an Arachni container to scan the web app (frontend).
+- Export HTML report and deploy to GitHub Pages. (https://vietducc.github.io/BrainyKids/#!/summary/charts)
+![image](https://github.com/user-attachments/assets/458836ce-8a14-499e-95c3-530a90de6b9d)
+
+⚙️ Build and Deploy Backend
+- Build Docker image from source code.
+- Push image to Docker Hub.
+- SSH into the server and deploy using docker-compose:
+- Stop the old container, pull the new image, restart.
+
+✅ Automated testing
+- Install Java 17 to run the Spring Boot project.
+- Run API tests using JUnit and RestAssured.
+
+🔒 Security
+- Sensitive information such as Docker credentials, SSH keys, tokens are stored using GitHub Secrets.
 ## 🛠️ Tech
 
 - **Language**: Java 17
