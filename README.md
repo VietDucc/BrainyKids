@@ -17,20 +17,52 @@ Welcome to the backend of **Brainy-Kids**, an interactive web platform designed 
 
 ## 📚 API Documentation
 
-- Swagger UI: [https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html](https://vietducc.id.vn/demo/swagger-ui/index.html#)
+- Swagger UI: https://duc-spring.ngodat0103.live/demo/swagger-ui/index.html#
 
-## 🛠️ Tech Stack
+## CICD Architecture Diagram
+![image](https://github.com/user-attachments/assets/cabd97dc-9461-4743-9b1a-a34705bb57ea)
+- Workflow uses Github Actions, triggered when a pussh is made to the Dev branch.
+- The goal to automate: testing - security scanning - building - deploying the backend to the server
+
+🧱 Prepare the environment
+- checkout: Download the source code from the repository.
+- Log in to Docker Hub to build and push the image.
+
+🛡️ Scan the backend image security
+- Snyk Scan: Scan the Docker image my-backend:latest for vulnerabilities.
+- Trivy Scan: After building a new image, continue scanning with Trivy.
+
+🔍 Scan the web interface security
+Arachni Scan:
+- Run an Arachni container to scan the web app (frontend).
+- Export HTML report and deploy to GitHub Pages. (https://vietducc.github.io/BrainyKids/#!/summary/charts)
+![image](https://github.com/user-attachments/assets/458836ce-8a14-499e-95c3-530a90de6b9d)
+
+⚙️ Build and Deploy Backend
+- Build Docker image from source code.
+- Push image to Docker Hub.
+- SSH into the server and deploy using docker-compose:
+- Stop the old container, pull the new image, restart.
+
+✅ Automated testing
+- Install Java 17 to run the Spring Boot project.
+- Run API tests using JUnit and RestAssured.
+
+🔒 Security
+- Sensitive information such as Docker credentials, SSH keys, tokens are stored using GitHub Secrets.
+## 🛠️ Tech
 
 - **Language**: Java 17
 - **Framework**: Spring Boot
 - **Authentication**: Clerk (frontend), JWT (backend)
 - **Database**: PostgreSQL
-- **Cache**: Redis
+- **Cache**: Redis, Caffeine
 - **API Documentation**: Swagger (OpenAPI), Postman
 - **Deployment**: Docker, Docker Compose
 - **CI/CD**: GitHub Actions
 - **Security Tools**: Trivy, Snyk, Arachni
 - **Operating System**: Ubuntu Server
+- **Testing**" JUnit5, RestAsured
 
 ## 🔐 Authentication & Authorization
 
@@ -60,29 +92,16 @@ All HTTP traffic is secured via HTTPS
 
 👥 Project Team & Responsibilities
 - Team size: 4 members
-
+  + Duong Viet Duc - MSSV: 21521959
+  + Do Quang Huy - MSSV: 215221339
+  + Dong Nguyen Huu Khoa - MSSV: 23520734
+  + Le Trung Kien - MSSV: 21520308
 - Duration: 3 months
 
-Your responsibilities:
-
--   Designed and implemented core REST APIs using Spring Boot
-
-- Integrated Clerk for authentication and configured JWT validation
-
-- Maintained documentation using Swagger
-
-- Optimized backend performance with Redis caching
-
-- Set up CI/CD with GitHub Actions for automated deployment
-
-- Performed security testing using Trivy, Snyk, and Arachni
-
-- Assisted team coordination, progress tracking, and task delivery
-
 ## 🔗 Related Links
-🌐 Web App: https://brainy-kids-frontend.vercel.app
+🌐 Web App: https://brainykidslearn.id.vn
 
-🛠️ Admin Panel: https://brainy-kids-frontend.vercel.app/admin
+🛠️ Admin Panel: https://brainykidslearn.id.vn/vi/admin
 
 💻 Frontend Repository: https://github.com/VietDucc/brainy-kids-frontend
 
