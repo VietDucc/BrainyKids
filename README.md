@@ -23,6 +23,7 @@ Welcome to the backend of **Brainy-Kids**, an interactive web platform designed 
 ![image](https://github.com/user-attachments/assets/cabd97dc-9461-4743-9b1a-a34705bb57ea)
 - Workflow uses Github Actions, triggered when a pussh is made to the Dev branch.
 - The goal to automate: testing - security scanning - building - deploying the backend to the server
+
 🧱 Prepare the environment
 - checkout: Download the source code from the repository.
 - Log in to Docker Hub to build and push the image.
