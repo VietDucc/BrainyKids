@@ -5,7 +5,6 @@ import com.example.demo.entity.Challenge;
 import com.example.demo.entity.ChallengeProgress;
 import com.example.demo.repository.ChallengeProgressRepository;
 import com.example.demo.repository.ChallengeRepository;
-import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

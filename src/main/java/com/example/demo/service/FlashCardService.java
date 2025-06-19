@@ -1,13 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Deck;
 import com.example.demo.entity.FlashCard;
 import com.example.demo.repository.FlashCardRepository;
-import com.example.demo.repository.DeckRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.NaturalId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

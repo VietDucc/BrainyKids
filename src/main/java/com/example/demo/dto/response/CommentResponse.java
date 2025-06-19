@@ -2,6 +2,7 @@ package com.example.demo.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,8 +13,11 @@ public class CommentResponse {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String authorId;
     private List<CommentResponse> replies;
     private Long blogId;
     private Long parentCommentId;
+
+    private String authorId;
+    private String authorName;
+    private String authorImg;
 }

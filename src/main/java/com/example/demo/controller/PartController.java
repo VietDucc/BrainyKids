@@ -1,0 +1,135 @@
+package com.example.demo.controller;
+
+import com.example.demo.dto.request.*;
+import com.example.demo.dto.response.*;
+import com.example.demo.entity.*;
+import com.example.demo.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/exam/parts")
+public class PartController {
+
+    @Autowired
+    private PartService partService;
+
+    @Autowired
+    private QuestionCacheService questionCacheService;
+
+
+    @GetMapping("/{examId}")
+    public ResponseEntity<List<PartDTO>> getPartsByExamId(@PathVariable Long examId) {
+        try {
+            List<Part> parts = partService.getPartsByExamId(examId);
+            List<PartDTO> partDTOs = parts.stream()
+                    .map(this::convertToPartDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(partDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<Map<String, String>> createPart(@RequestBody PartRequest partRequest) {
+        try {
+            partService.createPart(partRequest);
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/{partId}")
+    public ResponseEntity<PartDTO> updatePart(@PathVariable Long partId, @RequestBody PartRequest partRequest) {
+        try {
+            Part part = partService.updatePart(partId, partRequest);
+            PartDTO partDTO = convertToPartDTO(part);
+            return ResponseEntity.ok(partDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/{partId}")
+    public ResponseEntity<Map<String, String>> deletePart(@PathVariable Long partId) {
+        try {
+            partService.deletePart(partId);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Part deleted successfully");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/{partId}/questions")
+    public ResponseEntity<List<QuestionDTO>> getQuestionsByPartId(@PathVariable Long partId) {
+        try {
+            List<Question> questions = questionCacheService.getQuestionsByPartId(partId);
+            List<QuestionDTO> questionDTOs = questions.stream()
+                    .map(this::convertToQuestionDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(questionDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private PartDTO convertToPartDTO(Part part) {
+        List<QuestionDTO> questionDTOs = part.getQuestions().stream()
+                .map(this::convertToQuestionDTO)
+                .collect(Collectors.toList());
+
+        return PartDTO.builder()
+                .id(part.getId())
+                .description(part.getDescription())
+                .partOrder(part.getPartOrder())
+                .partNumber(part.getPartNumber())
+                .type(part.getType())
+                .questions(questionDTOs)
+                .build();
+    }
+
+    private QuestionDTO convertToQuestionDTO(Question question) {
+        List<QuestionOptionDTO> optionDTOs = question.getQuestionOptions().stream()
+                .map(this::convertToQuestionOptionDTO)
+                .collect(Collectors.toList());
+
+        return QuestionDTO.builder()
+                .id(question.getId())
+                .type(question.getType())
+                .question(question.getQuestion())
+                .description(question.getDescription())
+                .imgSrc(question.getImgSrc())
+                .questionOrder(question.getQuestionOrder())
+                .questionOptions(optionDTOs)
+                .build();
+    }
+
+    private QuestionOptionDTO convertToQuestionOptionDTO(QuestionOption option) {
+        return QuestionOptionDTO.builder()
+                .id(option.getId())
+                .answers(option.getAnswers())
+                .correct(option.isCorrect())
+                .imgSrc(option.getImgSrc())
+                .audioSrc(option.getAudioSrc())
+                .build();
+    }
+}

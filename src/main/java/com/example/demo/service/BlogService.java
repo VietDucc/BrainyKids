@@ -3,7 +3,9 @@ package com.example.demo.service;
 import com.example.demo.dto.request.BlogRequest;
 import com.example.demo.dto.response.BlogResponse;
 import com.example.demo.entity.Blog;
+import com.example.demo.entity.User;
 import com.example.demo.repository.BlogRepository;
+import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 public class BlogService {
 
     private final BlogRepository blogRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     public BlogResponse createBlog(BlogRequest request, String authorId) {
 
@@ -76,10 +80,21 @@ public class BlogService {
 
     public BlogResponse getBlogById(Long blogId) {
         Blog blog = blogRepository.findById(blogId).orElse(null);
+        assert blog != null;
         return mapToResponse(blog);
     }
 
     private BlogResponse mapToResponse(Blog blog) {
+        User author = userRepository.findByClerkUserId(blog.getAuthorId()).orElse(null);
+
+        String authorName = author != null
+                ? author.getFirstName() + " " + author.getLastName()
+                : "Unknown Author";
+
+        String authorImg = author != null
+                ? author.getProfile_image_url()
+                : "";
+
         return BlogResponse.builder()
                 .id(blog.getId())
                 .title(blog.getTitle())
@@ -88,6 +103,8 @@ public class BlogService {
                 .createdAt(blog.getCreatedAt())
                 .updatedAt(blog.getUpdatedAt())
                 .authorId(blog.getAuthorId())
+                .authorImg(authorImg)
+                .authorName(authorName)
                 .build();
     }
 }

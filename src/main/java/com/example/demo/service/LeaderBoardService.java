@@ -5,6 +5,7 @@ import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,9 +16,15 @@ public class LeaderBoardService {
     private UserRepository userRepository;
 
     public List<UserScoreResponseDTO> getAllUserScores() {
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findTop10ByOrderByScoreDesc();
         return users.stream()
-                .map(user -> new UserScoreResponseDTO(user.getId(), user.getClerkUserId(), user.getFirstName() + " " + user.getLastName(), user.getScore()))
+                .map(user -> new UserScoreResponseDTO(
+                        user.getId(),
+                        user.getClerkUserId(),
+                        user.getFirstName() + " " + user.getLastName(),
+                        user.getProfile_image_url(),
+                        user.getScore()
+                ))
                 .collect(Collectors.toList());
     }
 }

@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.dto.request.LessonProgressRequest;
 import com.example.demo.dto.response.LessonProgressResponse;
 import com.example.demo.entity.LessonProgress;
-
 import com.example.demo.service.LessonProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

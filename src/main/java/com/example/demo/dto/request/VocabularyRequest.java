@@ -1,15 +1,14 @@
 package com.example.demo.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class VocabularyRequest {
+    private Long lessonId;
     private String Eng;
     private String Vie;
     private String note;

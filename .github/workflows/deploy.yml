@@ -28,37 +28,50 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
 
-      # Step 2: Trivy Security Scan
-      - name: 🔍 Run Trivy to check for vulnerabilities
-        run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-          chmod +x ./bin/trivy
-          export PATH=$PATH:$PWD/bin
-          echo "Trivy version:"
-          ./bin/trivy --version
-          trivy image ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
-        continue-on-error: true
-
-      # Step 3: Arachni Scan with longle2003/arachni:v1.4-0.5.10
+    
+      # Step 2: Arachni Scan with longle2003/arachni:v1.4-0.5.10
       - name: 🔍 Run Arachni Scan + Export HTML Report
         run: |
           mkdir -p /tmp/arachni-reports
           
-          # Quét DAST
+          echo "Start Arachni scan..."
           docker run --rm -v /tmp/arachni-reports:/tmp/ longle2003/arachni:v1.4-0.5.10 \
             bin/arachni https://brainy-kids-frontend.vercel.app/ \
             --output-only-positives \
             --report-save-path=/tmp/scan.afr
-          
-          # Tạo HTML từ kết quả quét
+
+          echo "Scan done. Generating HTML report..."
           docker run --rm -v /tmp/arachni-reports:/tmp/ longle2003/arachni:v1.4-0.5.10 \
             bin/arachni_reporter /tmp/scan.afr --reporter=html:outfile=/tmp/scan.html.zip
-          
-          # Cấp quyền cho báo cáo
+
+          echo "Set permissions for report file"
           sudo chmod 777 /tmp/arachni-reports/scan.html.zip
+
+          echo "Listing /tmp/arachni-reports contents:"
+          ls -l /tmp/arachni-reports
 
         continue-on-error: true
 
+      - name: Check Arachni report zip file before unzip
+        run: |
+          echo "Checking report zip file:"
+          ls -lh /tmp/arachni-reports/scan.html.zip || echo "File not found!"
+
+      - name: Extract Arachni HTML report
+        run: |
+          unzip /tmp/arachni-reports/scan.html.zip -d /tmp/arachni-reports/html-report
+
+      - name: Check extracted report contents
+        run: |
+          echo "Extracted files:"
+          ls -l /tmp/arachni-reports/html-report
+
+      - name: Deploy Arachni report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GH_PAGES_TOKEN }}
+          publish_dir: /tmp/arachni-reports/html-report
+          publish_branch: gh-pages
 
 
 
@@ -79,7 +92,18 @@ jobs:
       - name: 🏗️ Build Docker Image
         run: |
           docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/my-backend:latest .
-
+          
+      # Step 3: Trivy Security Scan
+      - name: 🔍 Run Trivy to check for vulnerabilities
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+          chmod +x ./bin/trivy
+          export PATH=$PATH:$PWD/bin
+          echo "Trivy version:"
+          ./bin/trivy --version
+          trivy image ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+        continue-on-error: true
+        
       - name: 📤 Push Docker Image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
@@ -92,26 +116,27 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 8022
           script: |
-            # Cài git nếu chưa có
-            which git || sudo apt-get update && sudo apt-get install -y git
-
             # Cài docker-compose nếu chưa có
             which docker-compose || sudo apt-get update && sudo apt-get install -y docker-compose
-
-            # Thêm repo vào git safe directory
-            git config --global --add safe.directory /home/${{ secrets.SERVER_USER }}/BrainyKids
-
-            # Pull repo
-            cd ~
-            if [ ! -d "BrainyKids" ]; then
-              git clone https://github.com/VietDucc/BrainyKids.git
-            else
-              cd BrainyKids
-              git pull origin dev
-            fi
 
             # Chạy docker-compose
             cd ~/BrainyKids
             docker-compose down
             docker-compose pull
             docker-compose up -d
+
+            # Chờ backend khởi động 
+            sleep 10
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 🔧 Run API Tests (JUnit + RestAssured)
+        env:
+          API_BASE_URL: "https://duc-spring.ngodat0103.live"
+          JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+        run: mvn test
+

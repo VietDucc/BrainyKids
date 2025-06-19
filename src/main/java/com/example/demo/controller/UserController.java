@@ -2,20 +2,16 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.UserRequest;
 import com.example.demo.dto.request.UserScoreRequest;
-import com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;//RestController: danh dau class nay la mot REST Controller, giup Spring boot hieu rang no se xu li HTTP request va tra ve JSON/XML
 import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -31,6 +27,7 @@ public class UserController {
 
     @PostMapping("/clerk")
     public User createUser(@RequestBody UserRequest userRequest) {
+        System.out.println("Create User Clerk");
         return userService.createUser(userRequest);
 
     }
@@ -59,6 +56,16 @@ public class UserController {
 
     }
 
+    @GetMapping("/userActive/{clerkUserId}")
+    public Map<String, Object> getUserActiveStatus(@PathVariable String clerkUserId) {
+        User user = userRepository.findByClerkUserId(clerkUserId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("active", user.isActive());
+
+        return response;
+    }
 }
 // Hanh trinh du lieu
 // Khi nguoi dung gui request POST/ users
