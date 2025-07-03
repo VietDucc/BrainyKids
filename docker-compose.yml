@@ -14,8 +14,8 @@ services:
     container_name: my_backend
     ports:
       - "8080:8080"
-    depends_on:
-      - redis
+#    depends_on:
+#      - redis
     networks:
       - my-network
     environment:
