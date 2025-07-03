@@ -15,9 +15,17 @@ clerk:
 
 
 spring:
+#  redis:
+#    ssl: false
+#    timeout: 5s
   redis:
-    ssl: false
+    host: turntable.proxy.rlwy.net
+    port: 58723
+    username: default
+    password: PvAmWOLwVfzBEqQjiKBxmauFbpzOVdCo
+    ssl: true
     timeout: 5s
+
   datasource:
     url: "jdbc:postgresql://ep-autumn-block-a1n9tyd9-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
     username: "neondb_owner"
