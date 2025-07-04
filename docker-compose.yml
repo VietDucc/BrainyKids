@@ -18,9 +18,15 @@ services:
 #      - redis
     networks:
       - my-network
-    environment:
-      - SPRING_DATA_REDIS_HOST=my-redis
-      - SPRING_DATA_REDIS_PORT=6379
+#    environment:
+#      # Nếu bạn muốn truyền thông qua biến môi trường (tùy chọn)
+#      # Cách này sẽ GHI ĐÈ giá trị trong application.yml nếu có
+#      - SPRING_REDIS_HOST=turntable.proxy.rlwy.net
+#      - SPRING_REDIS_PORT=58723
+#      - SPRING_REDIS_PASSWORD=PvAmWOLwVfzBEqQjiKBxmauFbpzOVdCo
+#      - SPRING_REDIS_SSL=true
+#      # Hoặc nếu dùng spring.redis.username:
+#      - SPRING_REDIS_USERNAME=default
 
 networks:
   my-network:
